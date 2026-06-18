@@ -1,6 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, Download, Eye, EyeOff, Loader2, Upload, Wand2 } from 'lucide-react';
+import {
+  AlertTriangle,
+  Cloud,
+  CloudDownload,
+  CloudUpload,
+  Download,
+  Eye,
+  EyeOff,
+  Loader2,
+  Upload,
+  Wand2,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -13,11 +24,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { LLM_PRESETS, type LlmPresetId, type LlmSettings } from '@/schema/settings';
+import { LLM_PRESETS, type LlmPresetId, type LlmSettings, type WebDAVSettings } from '@/schema/settings';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { ping } from '@/services/llm/client';
 import { LlmError } from '@/services/llm/retry';
 import { clearAll, exportAll, importAll, type ExportPayload } from '@/services/db';
+import { pushToWebDAV, pullAndImport } from '@/services/sync/webdav';
 import { toast } from '@/stores/toastStore';
 import { cn, formatDateTime } from '@/lib/utils';
 
@@ -35,11 +47,14 @@ function downloadJSON(filename: string, data: unknown): void {
 
 export default function SettingsPage(): React.JSX.Element {
   const { t } = useTranslation();
-  const { llm, loaded, load, setLlm } = useSettingsStore();
+  const { llm, loaded, load, setLlm, webdav, setWebDAV } = useSettingsStore();
   const [draft, setDraft] = useState<LlmSettings>(llm);
   const [showKey, setShowKey] = useState(false);
   const [testing, setTesting] = useState(false);
   const [busy, setBusy] = useState<'export' | 'import' | 'clear' | null>(null);
+  const [wdraft, setWdraft] = useState<WebDAVSettings>(webdav);
+  const [wdavBusy, setWdavBusy] = useState<'push' | 'pull' | null>(null);
+  const [wdavDirty, setWdavDirty] = useState(false);
 
   useEffect(() => {
     if (!loaded) void load();
@@ -48,6 +63,20 @@ export default function SettingsPage(): React.JSX.Element {
   useEffect(() => {
     setDraft(llm);
   }, [llm]);
+
+  useEffect(() => {
+    setWdraft(webdav);
+    setWdavDirty(false);
+  }, [webdav]);
+
+  const setWd = (mut: (d: WebDAVSettings) => void): void => {
+    setWdraft((d) => {
+      const next = { ...d };
+      mut(next);
+      return next;
+    });
+    setWdavDirty(true);
+  };
 
   const applyPreset = (id: LlmPresetId): void => {
     const preset = LLM_PRESETS.find((p) => p.id === id);
@@ -281,11 +310,138 @@ export default function SettingsPage(): React.JSX.Element {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('settings.webdav.title')}</CardTitle>
-          <CardDescription>S6 实现：AES-GCM 加密 + 手动推/拉。</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Cloud className="size-4 text-muted-foreground" /> {t('settings.webdav.title')}
+          </CardTitle>
+          <CardDescription>
+            数据加密后推送到你的 WebDAV 服务器（坚果云 / NextCloud / 自建）。
+            所有凭据仅保存在浏览器。
+          </CardDescription>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          即将上线。
+        <CardContent className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="wdav-endpoint">{t('settings.webdav.endpoint')}</Label>
+              <Input
+                id="wdav-endpoint"
+                placeholder="https://dav.jianguoyun.com/dav/"
+                value={wdraft.endpoint}
+                onChange={(e) => setWd((d) => (d.endpoint = e.target.value))}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="wdav-path">{t('settings.webdav.remotePath')}</Label>
+              <Input
+                id="wdav-path"
+                placeholder="/resume-assistant"
+                value={wdraft.remotePath}
+                onChange={(e) => setWd((d) => (d.remotePath = e.target.value))}
+              />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="wdav-user">{t('settings.webdav.username')}</Label>
+              <Input
+                id="wdav-user"
+                value={wdraft.username}
+                onChange={(e) => setWd((d) => (d.username = e.target.value))}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="wdav-pass">{t('settings.webdav.password')}</Label>
+              <Input
+                id="wdav-pass"
+                type="password"
+                value={wdraft.password}
+                onChange={(e) => setWd((d) => (d.password = e.target.value))}
+              />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="wdav-phrase">{t('settings.webdav.passphrase')}</Label>
+            <Input
+              id="wdav-phrase"
+              type="password"
+              placeholder="用于加密数据库快照的口令（可选但建议填写）"
+              value={wdraft.passphrase ?? ''}
+              onChange={(e) => setWd((d) => (d.passphrase = e.target.value || undefined))}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              口令用于 PBKDF2 + AES-GCM 加密导出内容，拉取时需输入同一口令。
+            </p>
+          </div>
+
+          <Separator />
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={async () => {
+                setWdavBusy('push');
+                try {
+                  await setWebDAV(wdraft);
+                  const res = await pushToWebDAV(wdraft);
+                  toast({
+                    title: '推送成功',
+                    description: `${res.count.resumes} 份简历 · ${res.count.versions} 个版本`,
+                    variant: 'success',
+                  });
+                } catch (err) {
+                  toast({ title: '推送失败', description: String(err), variant: 'error', durationMs: 8000 });
+                } finally {
+                  setWdavBusy(null);
+                }
+              }}
+              disabled={wdavBusy !== null || !wdraft.endpoint || !wdraft.username || !wdraft.password}
+            >
+              {wdavBusy === 'push' ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <CloudUpload className="size-4" />
+              )}
+              {t('settings.webdav.push')}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={async () => {
+                setWdavBusy('pull');
+                try {
+                  await setWebDAV(wdraft);
+                  if (!confirm('拉取后会覆盖或合并本地数据，是否继续？')) { setWdavBusy(null); return; }
+                  const mode = confirm('覆盖本地数据？\n「确定」= 覆盖；「取消」= 合并')
+                    ? 'replace'
+                    : 'merge';
+                  const res = await pullAndImport(wdraft, mode);
+                  toast({
+                    title: '拉取成功',
+                    description: `已${mode === 'replace' ? '覆盖' : '合并'} · ${res.count.resumes} 份简历`,
+                    variant: 'success',
+                  });
+                } catch (err) {
+                  toast({ title: '拉取失败', description: String(err), variant: 'error', durationMs: 8000 });
+                } finally {
+                  setWdavBusy(null);
+                }
+              }}
+              disabled={wdavBusy !== null || !wdraft.endpoint || !wdraft.username || !wdraft.password}
+            >
+              {wdavBusy === 'pull' ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <CloudDownload className="size-4" />
+              )}
+              {t('settings.webdav.pull')}
+            </Button>
+            {wdavDirty ? (
+              <Button
+                size="sm"
+                onClick={async () => { await setWebDAV(wdraft); toast({ title: 'WebDAV 设置已保存', variant: 'success' }); }}
+              >
+                保存设置
+              </Button>
+            ) : null}
+          </div>
         </CardContent>
       </Card>
 

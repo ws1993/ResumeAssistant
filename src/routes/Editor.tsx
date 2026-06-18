@@ -19,7 +19,9 @@ import { ProjectForm } from '@/components/resume/ProjectForm';
 import { EducationForm } from '@/components/resume/EducationForm';
 import { SkillsForm } from '@/components/resume/SkillsForm';
 import { ResumePreview } from '@/components/resume/ResumePreview';
+import { TemplateSelect } from '@/components/resume/TemplateSelect';
 import { useAutosave } from '@/hooks/useAutosave';
+import { useExportResume } from '@/hooks/useExportResume';
 import { useResumeStore } from '@/stores/resumeStore';
 import { db, saveResume } from '@/services/db';
 import { createEmptyResume } from '@/schema/resume';
@@ -38,6 +40,7 @@ export default function EditorPage(): React.JSX.Element {
   const setStore = useResumeStore((s) => s.set);
 
   const { savedAt, dirty } = useAutosave(800);
+  const { previewRef, toolbar } = useExportResume(current);
 
   useEffect(() => {
     let mounted = true;
@@ -147,11 +150,16 @@ export default function EditorPage(): React.JSX.Element {
       </div>
 
       <aside className="hidden lg:block">
-        <div className="sticky top-[72px] max-h-[calc(100vh-96px)] overflow-auto rounded-lg bg-muted/30 p-4">
-          <ResumePreview
-            document={current}
-            className="origin-top-right scale-[0.62]"
-          />
+        <div className="sticky top-[72px] space-y-2">
+          {toolbar}
+          <TemplateSelect />
+          <div className="max-h-[calc(100vh-132px)] overflow-auto rounded-lg bg-muted/30 p-4">
+            <ResumePreview
+              ref={previewRef}
+              document={current}
+              className="origin-top-right scale-[0.62]"
+            />
+          </div>
         </div>
       </aside>
     </div>
