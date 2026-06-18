@@ -1,0 +1,104 @@
+/* 简历打印专用样式 - 使用传统颜色格式，兼容 dompdf.js */
+/* 覆盖 Tailwind CSS v4 的 oklch 颜色变量 */
+
+.resume-page {
+  --background: #f8f9fa;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #4b5563;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #4b5563;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #6366f1;
+  --radius: 0.625rem;
+}
+
+/* 覆盖 neutral 颜色 */
+.resume-page .text-neutral-900 {
+  color: #171717 !important;
+}
+
+.resume-page .text-neutral-800 {
+  color: #262626 !important;
+}
+
+.resume-page .text-neutral-700 {
+  color: #404040 !important;
+}
+
+.resume-page .text-neutral-600 {
+  color: #525252 !important;
+}
+
+.resume-page .text-neutral-500 {
+  color: #737373 !important;
+}
+
+.resume-page .text-neutral-400 {
+  color: #a3a3a3 !important;
+}
+
+.resume-page .border-neutral-900 {
+  border-color: #171717 !important;
+}
+
+.resume-page .border-neutral-700 {
+  border-color: #404040 !important;
+}
+
+.resume-page .border-neutral-500 {
+  border-color: #737373 !important;
+}
+
+.resume-page .bg-neutral-900 {
+  background-color: #171717 !important;
+}
+
+.resume-page .bg-neutral-800 {
+  background-color: #262626 !important;
+}
+
+.resume-page .bg-neutral-700 {
+  background-color: #404040 !important;
+}
+
+.resume-page .bg-neutral-500 {
+  background-color: #737373 !important;
+}
+
+/* 覆盖 white 和 black */
+.resume-page .text-white {
+  color: #ffffff !important;
+}
+
+.resume-page .text-black {
+  color: #000000 !important;
+}
+
+.resume-page .bg-white {
+  background-color: #ffffff !important;
+}
+
+.resume-page .bg-black {
+  background-color: #000000 !important;
+}
+
+/* 确保所有颜色都是传统格式 */
+.resume-page * {
+  color: inherit;
+  background-color: inherit;
+  border-color: inherit;
+}
