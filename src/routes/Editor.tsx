@@ -154,11 +154,12 @@ export default function EditorPage(): React.JSX.Element {
           {toolbar}
           <TemplateSelect />
           <div className="max-h-[calc(100vh-132px)] overflow-auto rounded-lg bg-muted/30 p-4">
-            <ResumePreview
-              ref={previewRef}
-              document={current}
-              className="origin-top-right scale-[0.62]"
-            />
+            <div className="origin-top-right scale-[0.62]">
+              <ResumePreview
+                ref={previewRef}
+                document={current}
+              />
+            </div>
           </div>
         </div>
       </aside>

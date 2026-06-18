@@ -152,8 +152,12 @@
 
   html,
   body {
+    margin: 0 !important;
+    padding: 0 !important;
     background: #fff !important;
     color: #000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .print\:hidden,
@@ -161,10 +165,21 @@
     display: none !important;
   }
 
+  /* Reset any transform on preview containers */
+  .resume-page,
+  .resume-page *,
+  [class*="scale-"],
+  [class*="origin-"] {
+    transform: none !important;
+    transform-origin: top left !important;
+  }
+
   .resume-page {
     box-shadow: none !important;
     margin: 0 !important;
     padding: 18mm 16mm !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
     page-break-after: always;
   }
 }
