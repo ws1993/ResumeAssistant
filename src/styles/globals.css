@@ -35,53 +35,55 @@
   --font-mono: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
 }
 
+/* ─── Swiss Design Light Mode ─── */
 :root {
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.18 0.01 264);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.01 264);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 264);
-  --primary: oklch(0.27 0.02 264);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.96 0.005 264);
-  --secondary-foreground: oklch(0.27 0.02 264);
-  --muted: oklch(0.96 0.005 264);
-  --muted-foreground: oklch(0.55 0.02 264);
-  --accent: oklch(0.94 0.01 264);
-  --accent-foreground: oklch(0.27 0.02 264);
-  --destructive: oklch(0.6 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.62 0.16 152);
-  --warning: oklch(0.74 0.15 70);
-  --border: oklch(0.92 0.005 264);
-  --input: oklch(0.92 0.005 264);
-  --ring: oklch(0.27 0.02 264);
-  --radius: 0.625rem;
+  --background: oklch(1.00 0 0);
+  --foreground: oklch(0.15 0.01 15);
+  --card: oklch(1.00 0 0);
+  --card-foreground: oklch(0.15 0.01 15);
+  --popover: oklch(1.00 0 0);
+  --popover-foreground: oklch(0.15 0.01 15);
+  --primary: oklch(0.15 0.01 15);
+  --primary-foreground: oklch(1.00 0 0);
+  --secondary: oklch(0.97 0.002 15);
+  --secondary-foreground: oklch(0.25 0.01 15);
+  --muted: oklch(0.97 0.002 15);
+  --muted-foreground: oklch(0.55 0.01 15);
+  --accent: oklch(0.97 0.005 15);
+  --accent-foreground: oklch(0.25 0.01 15);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1.00 0 0);
+  --success: oklch(0.62 0.17 155);
+  --warning: oklch(0.75 0.15 70);
+  --border: oklch(0.15 0.01 15);
+  --input: oklch(0.90 0.003 15);
+  --ring: oklch(0.58 0.22 25);
+  --radius: 0px;
 }
 
+/* ─── Dark Mode ─── */
 .dark {
-  --background: oklch(0.16 0.01 264);
+  --background: oklch(0.15 0.01 15);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.2 0.01 264);
+  --card: oklch(0.19 0.01 15);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.2 0.01 264);
+  --popover: oklch(0.19 0.01 15);
   --popover-foreground: oklch(0.98 0 0);
   --primary: oklch(0.98 0 0);
-  --primary-foreground: oklch(0.2 0.01 264);
-  --secondary: oklch(0.26 0.01 264);
+  --primary-foreground: oklch(0.15 0.01 15);
+  --secondary: oklch(0.24 0.01 15);
   --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.26 0.01 264);
-  --muted-foreground: oklch(0.66 0.02 264);
-  --accent: oklch(0.3 0.01 264);
+  --muted: oklch(0.24 0.01 15);
+  --muted-foreground: oklch(0.65 0.01 15);
+  --accent: oklch(0.28 0.01 15);
   --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.7 0.18 152);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1.00 0 0);
+  --success: oklch(0.70 0.18 155);
   --warning: oklch(0.78 0.16 70);
-  --border: oklch(0.3 0.01 264);
-  --input: oklch(0.3 0.01 264);
-  --ring: oklch(0.7 0.02 264);
+  --border: oklch(0.35 0.01 15);
+  --input: oklch(0.28 0.01 15);
+  --ring: oklch(0.58 0.22 25);
 }
 
 @layer base {
@@ -109,7 +111,7 @@
   }
 
   ::selection {
-    background-color: color-mix(in oklch, var(--primary) 25%, transparent);
+    background-color: oklch(0.58 0.22 25 / 0.2);
     color: var(--foreground);
   }
 }
@@ -128,9 +130,17 @@
   }
 }
 
-/* ============================================================
-   简历预览容器：A4 纸张样式（210mm x 297mm）
-   ============================================================ */
+/* ─── Swiss Design: hard shadow on card hover ─── */
+@layer components {
+  .card-hover-effect {
+    transition: box-shadow 0.15s ease;
+  }
+  .card-hover-effect:hover {
+    box-shadow: 6px 6px 0 var(--border);
+  }
+}
+
+/* ─── Resume preview container: A4 paper ─── */
 .resume-page {
   width: 210mm;
   min-height: 297mm;

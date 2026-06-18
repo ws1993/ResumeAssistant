@@ -23,15 +23,17 @@ export function Header(): React.JSX.Element {
   const { t } = useTranslation();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/65 no-print">
-      <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-6 px-6">
-        <NavLink to="/" className="flex items-center gap-2">
-          <div className="grid size-7 place-items-center rounded-md bg-foreground text-background">
-            <FileText className="size-4" />
+    <header className="sticky top-0 z-40 border-b-[3px] border-foreground bg-background no-print">
+      <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-8 px-6">
+        <NavLink to="/" className="flex items-center gap-2.5">
+          <div className="grid size-7 place-items-center bg-[color:var(--destructive)]">
+            <FileText className="size-4 text-white" />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-tight">{t('app.name')}</span>
-            <span className="text-[10px] text-muted-foreground">{t('app.tagline')}</span>
+            <span className="text-sm font-black tracking-tight">{t('app.name')}</span>
+            <span className="text-[10px] font-medium tracking-wider uppercase text-muted-foreground">
+              {t('app.tagline')}
+            </span>
           </div>
         </NavLink>
 
@@ -43,10 +45,10 @@ export function Header(): React.JSX.Element {
               end={item.to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-sm transition-colors',
+                  'inline-flex h-8 items-center gap-1.5 border-2 px-3 text-[0.6875rem] font-bold uppercase tracking-wider transition-colors',
                   isActive
-                    ? 'bg-accent text-accent-foreground'
-                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+                    ? 'border-foreground bg-foreground text-background'
+                    : 'border-transparent text-muted-foreground hover:border-foreground hover:text-foreground',
                 )
               }
             >

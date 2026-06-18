@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Assistant · Linear 暗色风格</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0b; --bg-elevated: #111113; --bg-hover: #18181b; --bg-active: #1f1f23;
+    --border: #27272a; --border-subtle: #1e1e21;
+    --fg: #fafafa; --fg-secondary: #a1a1aa; --fg-tertiary: #71717a;
+    --accent: #818cf8; --accent-dim: rgba(129,140,248,0.12); --accent-hover: #a5b4fc;
+    --green: #34d399; --green-dim: rgba(52,211,153,0.12);
+    --red: #f87171; --red-dim: rgba(248,113,113,0.12);
+    --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.12);
+    --glass: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.06);
+    --font: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  html { font-size: 15px; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font); background: var(--bg); color: var(--fg); line-height: 1.5; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
+
+  /* ─── Nav ─── */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(10,10,11,0.8); backdrop-filter: blur(16px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 0; }
+  nav .container { display: flex; align-items: center; gap: 32px; }
+  .nav-logo { font-weight: 700; font-size: 0.9375rem; display: flex; align-items: center; gap: 8px; letter-spacing: -0.01em; }
+  .nav-logo svg { width: 20px; height: 20px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { font-size: 0.8125rem; font-weight: 500; text-decoration: none; color: var(--fg-tertiary); padding: 6px 12px; border-radius: var(--radius); transition: all .15s; }
+  .nav-links a:hover { color: var(--fg-secondary); background: var(--glass); }
+  .nav-links a.active { color: var(--fg); background: var(--bg-hover); }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .nav-right span { font-size: 0.75rem; color: var(--fg-tertiary); }
+
+  /* ─── Buttons ─── */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); font-family: var(--font); font-size: 0.8125rem; font-weight: 500; border: 1px solid transparent; cursor: pointer; transition: all .15s; }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-ghost { background: transparent; color: var(--fg-secondary); border-color: var(--border); }
+  .btn-ghost:hover { background: var(--bg-hover); color: var(--fg); border-color: var(--fg-tertiary); }
+  .btn-sm { padding: 4px 10px; font-size: 0.75rem; }
+  .btn-danger { background: var(--red-dim); color: var(--red); border-color: rgba(248,113,113,0.2); }
+  .btn-danger:hover { background: rgba(248,113,113,0.2); }
+
+  /* ─── Cards ─── */
+  .card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: border-color .15s; }
+  .card:hover { border-color: var(--fg-tertiary); }
+
+  /* ─── Badges ─── */
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; font-size: 0.6875rem; font-weight: 600; border-radius: 100px; }
+  .badge-accent { background: var(--accent-dim); color: var(--accent); }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-red { background: var(--red-dim); color: var(--red); }
+  .badge-amber { background: var(--amber-dim); color: var(--amber); }
+  .badge-ghost { background: var(--glass); color: var(--fg-tertiary); }
+
+  /* ─── Input ─── */
+  input, textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-family: var(--font); font-size: 0.8125rem; background: var(--bg); color: var(--fg); outline: none; transition: border-color .15s; }
+  input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  textarea { resize: vertical; }
+
+  /* ─── Score ─── */
+  .score-big { font-size: 3.5rem; font-weight: 300; letter-spacing: -0.04em; line-height: 1; }
+  .score-bar { height: 4px; background: var(--bg-active); border-radius: 2px; position: relative; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 2px; position: absolute; left: 0; top: 0; }
+  .score-row { display: flex; align-items: center; gap: 10px; }
+  .score-label { width: 48px; font-size: 0.6875rem; font-weight: 500; color: var(--fg-tertiary); flex-shrink: 0; }
+  .score-val { width: 28px; font-size: 0.75rem; font-weight: 600; text-align: right; flex-shrink: 0; color: var(--fg-secondary); }
+
+  /* ─── Chips ─── */
+  .chip { display: inline-flex; align-items: center; padding: 3px 10px; font-size: 0.6875rem; font-weight: 500; margin: 0 4px 4px 0; border-radius: 100px; }
+  .chip-hit { background: var(--green-dim); color: var(--green); }
+  .chip-miss { background: var(--red-dim); color: var(--red); }
+
+  /* ─── Suggestion ─── */
+  .sug-card { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px; margin-bottom: 10px; cursor: pointer; transition: all .15s; }
+  .sug-card:hover { border-color: var(--fg-tertiary); background: var(--bg-hover); }
+  .sug-card.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .sug-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+  .sug-body { font-size: 0.8125rem; color: var(--fg-secondary); line-height: 1.55; }
+  .sug-draft { margin-top: 8px; padding: 10px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); font-size: 0.75rem; line-height: 1.5; color: var(--fg-secondary); }
+
+  /* ─── Resume preview ─── */
+  .resume-paper { background: #fff; color: #111; width: 100%; aspect-ratio: 210/297; padding: 28px 24px; font-size: 9.5px; line-height: 1.55; border-radius: var(--radius-lg); overflow: hidden; font-family: var(--font); box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.2); }
+  .resume-paper h1 { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+  .resume-paper .subtitle { font-size: 9.5px; color: #666; margin-bottom: 10px; }
+  .resume-paper .contact { font-size: 8.5px; color: #999; display: flex; gap: 10px; margin-bottom: 14px; }
+  .resume-paper h2 { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); border-bottom: 1px solid #e5e5e5; padding-bottom: 3px; margin: 12px 0 6px; }
+  .resume-paper .exp-item { margin-bottom: 8px; }
+  .resume-paper .exp-head { display: flex; justify-content: space-between; align-items: baseline; }
+  .resume-paper .exp-title { font-size: 10.5px; font-weight: 600; }
+  .resume-paper .exp-sub { font-size: 8.5px; color: #888; }
+  .resume-paper .exp-period { font-size: 8.5px; color: #aaa; }
+  .resume-paper ul { padding-left: 12px; margin: 3px 0; }
+  .resume-paper li { font-size: 9px; margin-bottom: 1px; color: #444; }
+  .resume-paper .skills-grid { display: grid; grid-template-columns: 70px 1fr; gap: 1px 8px; font-size: 9px; }
+  .resume-paper .skills-grid dt { font-weight: 600; color: #888; }
+
+  /* ─── Layout ─── */
+  .page { padding: 28px 0; }
+  .section-gap { margin-bottom: 36px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+  .col-span-3 { grid-column: span 3; } .col-span-4 { grid-column: span 4; }
+  .col-span-5 { grid-column: span 5; } .col-span-7 { grid-column: span 7; }
+  .toolbar { display: flex; align-items: center; gap: 8px; padding: 6px 0; margin-bottom: 8px; }
+  .radar-wrap { width: 180px; height: 180px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Resume Assistant
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active">工作台</a><a href="#">编辑器</a><a href="#">JD 对标</a><a href="#">设置</a>
+    </div>
+    <div class="nav-right"><span>中文</span><span>◐</span></div>
+  </div>
+</nav>
+
+<div class="page"><div class="container">
+
+  <!-- DASHBOARD -->
+  <div class="section-gap">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;">
+      <div>
+        <div style="font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;">我的简历</div>
+        <div style="font-size:0.8125rem;color:var(--fg-tertiary);margin-top:4px;">创建、管理与版本对比</div>
+      </div>
+      <button class="btn btn-primary">+ 新建简历</button>
+    </div>
+    <div class="grid">
+      <div class="col-span-4"><div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div style="font-weight:600;">前端工程师 · 字节</div><span class="badge badge-green">v3</span>
+        </div>
+        <div style="font-size:0.75rem;color:var(--fg-tertiary);">目标：高级前端工程师</div>
+        <div style="font-size:0.6875rem;color:var(--fg-tertiary);margin-top:4px;">最近编辑：2026-06-18 10:30</div>
+        <div style="font-size:0.8125rem;color:var(--fg-secondary);margin-top:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">5 年前端开发经验，主导过 3 个日活百万级产品的前端架构设计。</div>
+        <div style="display:flex;gap:6px;margin-top:14px;">
+          <button class="btn btn-sm btn-primary">编辑</button><button class="btn btn-sm btn-ghost">对标</button>
+        </div>
+      </div></div>
+      <div class="col-span-4"><div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+          <div style="font-weight:600;">全栈 · 阿里</div><span class="badge badge-ghost">v1</span>
+        </div>
+        <div style="font-size:0.75rem;color:var(--fg-tertiary);">目标：全栈工程师</div>
+        <div style="font-size:0.6875rem;color:var(--fg-tertiary);margin-top:4px;">最近编辑：2026-06-15</div>
+        <div style="font-size:0.8125rem;color:var(--fg-secondary);margin-top:10px;">Node.js + React 全栈，独立负责过从 0 到 1 的 SaaS 产品。</div>
+        <div style="display:flex;gap:6px;margin-top:14px;">
+          <button class="btn btn-sm btn-primary">编辑</button><button class="btn btn-sm btn-ghost">对标</button>
+        </div>
+      </div></div>
+      <div class="col-span-4"><div class="card" style="border-style:dashed;border-color:var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;">
+        <div style="font-size:1.5rem;color:var(--fg-tertiary);margin-bottom:4px;">+</div>
+        <div style="font-size:0.75rem;color:var(--fg-tertiary);">从空白模板开始</div>
+      </div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- EDITOR -->
+  <div class="section-gap">
+    <div style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;">简历编辑器</div>
+    <div class="grid">
+      <div class="col-span-5">
+        <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-tertiary);margin-bottom:12px;">基本信息</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">姓名</label><input value="张三" readonly></div>
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">头衔</label><input value="高级前端工程师" readonly></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">邮箱</label><input value="zhangsan@example.com" readonly></div>
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">手机</label><input value="138-0000-0000" readonly></div>
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">城市</label><input value="北京" readonly></div>
+        </div>
+        <div style="margin-bottom:16px;"><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">个人简介</label><textarea rows="3" readonly>5 年前端开发经验，主导过 3 个日活百万级产品的前端架构设计。擅长 React 生态与性能优化。</textarea></div>
+        <hr class="divider" style="margin:16px 0;">
+        <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-tertiary);margin-bottom:12px;">工作经历</div>
+        <div class="card" style="margin-bottom:10px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">公司</label><input value="字节跳动" readonly></div>
+            <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">职位</label><input value="高级前端工程师" readonly></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;">
+            <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">开始</label><input value="2023-03" readonly></div>
+            <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">结束</label><input value="至今" readonly></div>
+            <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">城市</label><input value="北京" readonly></div>
+          </div>
+          <div style="margin-top:10px;">
+            <label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">工作要点</label>
+            <div style="padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.75rem;line-height:1.6;color:var(--fg-secondary);">
+              <div style="margin-bottom:2px;">– 主导前端架构重构，将构建时间从 45s 降至 8s</div>
+              <div style="margin-bottom:2px;">– 设计并实现微前端方案，支撑 5 个业务团队独立部署</div>
+              <div>– 性能优化专项：Lighthouse 45 → 95，FCR 降低 60%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-span-7">
+        <div class="toolbar">
+          <button class="btn btn-sm btn-primary">下载 PDF</button>
+          <button class="btn btn-sm btn-ghost">打印 PDF</button>
+          <span style="font-family:var(--mono);font-size:0.6875rem;color:var(--fg-tertiary);margin-left:auto;">张三_高级前端工程师_2026-06-18.pdf</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button class="btn btn-sm btn-ghost" style="font-size:0.625rem;">纸张 · 标准黑白</button>
+          <button class="btn btn-sm" style="font-size:0.625rem;background:var(--accent);color:#fff;border-color:var(--accent);">极简 · 暗色 Geist</button>
+          <button class="btn btn-sm btn-ghost" style="font-size:0.625rem;">文档 · 左栏双列</button>
+        </div>
+        <div class="resume-paper">
+          <h1>张三</h1><div class="subtitle">高级前端工程师</div>
+          <div class="contact"><span>zhangsan@example.com</span><span>138-0000-0000</span><span>北京</span><span>github.com/zhangsan</span></div>
+          <h2>个人简介</h2><p style="font-size:9px;color:#444;margin-bottom:6px;">5 年前端开发经验，主导过 3 个日活百万级产品的前端架构设计。擅长 React 生态与性能优化。</p>
+          <h2>工作经历</h2>
+          <div class="exp-item"><div class="exp-head"><div><div class="exp-title">高级前端工程师</div><div class="exp-sub">字节跳动 · 北京</div></div><div class="exp-period">2023-03 — 至今</div></div><ul><li>主导前端架构重构，构建时间 45s → 8s</li><li>微前端方案，支撑 5 个团队独立部署</li><li>Lighthouse 45 → 95，FCR 降低 60%</li></ul></div>
+          <div class="exp-item"><div class="exp-head"><div><div class="exp-title">前端工程师</div><div class="exp-sub">美团 · 北京</div></div><div class="exp-period">2021-07 — 2023-02</div></div><ul><li>商家端 React 重构，覆盖 200 万商家</li><li>组件库 35 个组件，4 条业务线采用</li></ul></div>
+          <h2>项目经历</h2>
+          <div class="exp-item"><div class="exp-head"><div><div class="exp-title">智能表单平台</div><div class="exp-sub" style="margin-left:6px;">负责人</div></div><div class="exp-period">2024-06 — 2025-01</div></div><p style="font-size:8.5px;color:#666;margin:2px 0;">低代码表单搭建平台，支持拖拽、条件联动、多端适配。</p><ul><li>DSL 引擎，50+ 组件类型与复杂联动逻辑</li><li>接入 LLM 辅助生成，搭建效率提升 3 倍</li></ul></div>
+          <h2>教育背景</h2><div class="exp-item"><div class="exp-head"><div><div class="exp-title">北京大学</div><div class="exp-sub">硕士 · 计算机科学</div></div><div class="exp-period">2019-09 — 2021-06</div></div></div>
+          <h2>技能</h2><dl class="skills-grid"><dt>编程语言</dt><dd>JavaScript, TypeScript, Python, Go</dd><dt>框架</dt><dd>React, Next.js, Vue 3, Nest.js</dd><dt>工具链</dt><dd>Webpack, Vite, Rsbuild, Docker</dd></dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- JD TAILOR -->
+  <div class="section-gap">
+    <div style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:20px;">JD 对标分析</div>
+    <div class="grid">
+      <div class="col-span-3"><div class="card">
+        <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-tertiary);margin-bottom:10px;">招聘需求（JD）</div>
+        <textarea rows="11" readonly style="font-size:0.75rem;line-height:1.6;">高级前端工程师 - 字节跳动
+
+职责：
+- 负责抖音电商前端架构设计与优化
+- 主导前端工程化体系建设
+- 推动前端性能优化
+
+要求：
+- 5 年以上前端开发经验
+- 精通 React/TypeScript
+- 有大型项目架构设计经验
+- 熟悉 Node.js、Webpack/Vite
+- 良好的沟通能力和团队协作精神</textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">公司</label><input value="字节跳动" readonly></div>
+          <div><label style="font-size:0.6875rem;color:var(--fg-tertiary);display:block;margin-bottom:4px;">行业</label><input value="互联网" readonly></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;">开始分析</button>
+      </div></div>
+
+      <div class="col-span-5"><div class="card">
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;">
+          <div style="font-size:1.125rem;font-weight:600;">对标评分</div>
+          <div class="score-big">73</div>
+          <div style="font-size:0.75rem;color:var(--fg-tertiary);">/ 100</div>
+        </div>
+        <div style="font-size:0.8125rem;color:var(--fg-secondary);margin-bottom:16px;">整体匹配度较高，量化数据充足，但缺少「Node.js」与「团队协作」。</div>
+        <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;">
+          <svg viewBox="0 0 200 200" class="radar-wrap">
+            <polygon points="100,10 185,65 155,170 45,170 15,65" fill="none" stroke="var(--border)" stroke-width="1"/>
+            <polygon points="100,30 165,70 140,155 60,155 35,70" fill="none" stroke="var(--border)" stroke-width="1"/>
+            <polygon points="100,50 145,75 125,140 75,140 55,75" fill="none" stroke="var(--border)" stroke-width="1"/>
+            <polygon points="100,22 170,68 142,160 55,158 30,68" fill="rgba(129,140,248,0.12)" stroke="var(--accent)" stroke-width="1.5"/>
+            <circle cx="100" cy="22" r="3" fill="var(--accent)"/><circle cx="170" cy="68" r="3" fill="var(--accent)"/>
+            <circle cx="142" cy="160" r="3" fill="var(--accent)"/><circle cx="55" cy="158" r="3" fill="var(--accent)"/>
+            <circle cx="30" cy="68" r="3" fill="var(--accent)"/>
+            <text x="100" y="5" text-anchor="middle" font-size="9" fill="var(--fg-tertiary)" font-family="Inter">关键词</text>
+            <text x="193" y="65" text-anchor="start" font-size="9" fill="var(--fg-tertiary)" font-family="Inter">相关度</text>
+            <text x="163" y="180" text-anchor="start" font-size="9" fill="var(--fg-tertiary)" font-family="Inter">量化</text>
+            <text x="37" y="180" text-anchor="end" font-size="9" fill="var(--fg-tertiary)" font-family="Inter">表达</text>
+            <text x="7" y="65" text-anchor="end" font-size="9" fill="var(--fg-tertiary)" font-family="Inter">结构</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="score-row"><span class="score-label">关键词</span><div class="score-bar" style="flex:1"><div class="score-bar-fill" style="width:68%;background:var(--accent);"></div></div><span class="score-val">68</span></div>
+            <div class="score-row"><span class="score-label">相关度</span><div class="score-bar" style="flex:1"><div class="score-bar-fill" style="width:82%;background:var(--accent);"></div></div><span class="score-val">82</span></div>
+            <div class="score-row"><span class="score-label">量化</span><div class="score-bar" style="flex:1"><div class="score-bar-fill" style="width:78%;background:var(--accent);"></div></div><span class="score-val">78</span></div>
+            <div class="score-row"><span class="score-label">表达</span><div class="score-bar" style="flex:1"><div class="score-bar-fill" style="width:70%;background:var(--accent);"></div></div><span class="score-val">70</span></div>
+            <div class="score-row"><span class="score-label">结构</span><div class="score-bar" style="flex:1"><div class="score-bar-fill" style="width:85%;background:var(--accent);"></div></div><span class="score-val">85</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-tertiary);margin-bottom:10px;">关键词覆盖 · 已命中 8 · 缺失 3</div>
+        <div style="margin-bottom:10px;"><span class="chip chip-hit">React ×3</span><span class="chip chip-hit">TypeScript ×2</span><span class="chip chip-hit">Webpack ×1</span><span class="chip chip-hit">Vite ×1</span><span class="chip chip-hit">性能优化 ×2</span><span class="chip chip-hit">架构设计 ×2</span><span class="chip chip-hit">前端 ×5</span><span class="chip chip-hit">Docker ×1</span></div>
+        <div><span class="chip chip-miss">Node.js</span><span class="chip chip-miss">团队协作</span><span class="chip chip-miss">电商</span></div>
+      </div></div>
+
+      <div class="col-span-4"><div class="card">
+        <div style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-tertiary);margin-bottom:10px;">改写建议 · 已选 1 / 3</div>
+        <div class="sug-card selected">
+          <div class="sug-header"><span class="badge badge-red">必改</span><span class="badge badge-amber">关键词</span><span style="font-family:var(--mono);font-size:0.625rem;color:var(--fg-tertiary);">/experiences/0/bullets/2</span></div>
+          <div class="sug-body">缺少「Node.js」关键词，JD 明确要求。建议补充。</div>
+          <div class="sug-draft">基于 Node.js 中间层做 SSR，Lighthouse 45 → 95，FCR 降低 60%</div>
+        </div>
+        <div class="sug-card">
+          <div class="sug-header"><span class="badge badge-amber">建议</span><span class="badge badge-ghost">量化</span></div>
+          <div class="sug-body">「覆盖 200 万商家」已量化，但缺少具体贡献度。</div>
+          <div class="sug-draft">主导 60% 核心模块，覆盖 200 万商家，页面加载提速 40%</div>
+        </div>
+        <div class="sug-card">
+          <div class="sug-header"><span class="badge badge-amber">建议</span><span class="badge badge-ghost">改写</span></div>
+          <div class="sug-body">个人简介缺少「团队协作」与「电商」语境。</div>
+          <div class="sug-draft">主导过 3 个日活百万级电商产品的前端架构，擅长跨部门协作。</div>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:14px;">
+          <button class="btn btn-primary" style="flex:1;">应用所选建议</button>
+          <button class="btn btn-ghost btn-sm">清空</button>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:8px;">写一封求职信</button>
+      </div></div>
+    </div>
+  </div>
+
+</div></div>
+</body>
+</html>

@@ -15,17 +15,17 @@
 
 ## 技术栈
 
-| 层 | 选型 |
-|---|---|
-| 构建 | [Rsbuild](https://rsbuild.rs/) + React 19 + TypeScript |
-| 样式 | Tailwind CSS v4 + shadcn/ui（New York 风格） |
-| 状态 | Zustand + Immer |
-| 表单 | React Hook Form + Zod |
-| 存储 | Dexie.js（IndexedDB） |
-| 路由 | React Router v7 |
-| LLM | `openai` 兼容 SDK（用户自配置 baseURL/apiKey/model） |
-| PDF | `html2canvas-pro` + `jsPDF` + `react-to-print` |
-| WebDAV | `webdav` (browser build) + WebCrypto AES-GCM |
+| 层     | 选型                                                   |
+| ------ | ------------------------------------------------------ |
+| 构建   | [Rsbuild](https://rsbuild.rs/) + React 19 + TypeScript    |
+| 样式   | Tailwind CSS v4 + shadcn/ui（New York 风格）           |
+| 状态   | Zustand + Immer                                        |
+| 表单   | React Hook Form + Zod                                  |
+| 存储   | Dexie.js（IndexedDB）                                  |
+| 路由   | React Router v7                                        |
+| LLM    | `openai` 兼容 SDK（用户自配置 baseURL/apiKey/model） |
+| PDF    | `html2canvas-pro` + `jsPDF` + `react-to-print`   |
+| WebDAV | `webdav` (browser build) + WebCrypto AES-GCM         |
 
 ## 快速开始
 
@@ -34,19 +34,19 @@ npm install
 npm run dev
 ```
 
-打开 <http://localhost:5273> 即可。
+打开 [http://localhost:5273](http://localhost:5273) 即可。
 
 > 当前进度：**S1 基建已完成**（Rsbuild + Tailwind v4 + shadcn 基础组件 + 路由 + i18n + 主题切换）。后续 Sprint 见 [`docs/PRD.md`](./docs/PRD.md)。
 
 ## 脚本
 
-| 命令 | 说明 |
-|---|---|
-| `npm run dev` | 启动开发服务器（默认端口 5273） |
-| `npm run build` | 生产构建，输出到 `dist/` |
-| `npm run preview` | 预览生产构建 |
-| `npm run check` | TypeScript 类型检查 |
-| `npm run format` | Prettier 格式化 |
+| 命令                | 说明                            |
+| ------------------- | ------------------------------- |
+| `npm run dev`     | 启动开发服务器（默认端口 5273） |
+| `npm run build`   | 生产构建，输出到 `dist/`      |
+| `npm run preview` | 预览生产构建                    |
+| `npm run check`   | TypeScript 类型检查             |
+| `npm run format`  | Prettier 格式化                 |
 
 ## 部署到 Vercel
 
@@ -61,6 +61,10 @@ npm run dev
 ## 安全
 
 API Key 与 WebDAV 凭据仅保存在你的浏览器本地（localStorage / IndexedDB），不会上传到任何第三方服务器。WebDAV 同步前会用你设定的口令通过 PBKDF2 派生密钥 + AES-GCM 加密整库快照。
+
+## 友联
+
+[LINUX DO - 新的理想型社区](https://linux.do/)
 
 ## 许可证
 
