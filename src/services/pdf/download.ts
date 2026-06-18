@@ -15,6 +15,37 @@ const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
 
 /**
+ * 临时移除祖先元素上的 CSS transform，以确保 html2canvas 正确截图。
+ * 返回一个还原函数，截图完成后必须调用。
+ */
+function stripAncestorTransforms(el: HTMLElement): () => void {
+  const overrides: Array<{ node: HTMLElement; transform: string; origin: string; willChange: string }> = [];
+  let current: HTMLElement | null = el.parentElement;
+  while (current && current !== document.body) {
+    const style = getComputedStyle(current);
+    if (style.transform && style.transform !== 'none') {
+      overrides.push({
+        node: current,
+        transform: current.style.transform,
+        origin: current.style.transformOrigin,
+        willChange: current.style.willChange,
+      });
+      current.style.transform = 'none';
+      current.style.transformOrigin = 'top left';
+      current.style.willChange = 'auto';
+    }
+    current = current.parentElement;
+  }
+  return () => {
+    for (const o of overrides) {
+      o.node.style.transform = o.transform;
+      o.node.style.transformOrigin = o.origin;
+      o.node.style.willChange = o.willChange;
+    }
+  };
+}
+
+/**
  * 把一个 DOM 节点截成 PDF。
  * - 依赖懒加载 html2canvas-pro 与 jsPDF
  * - 自动按 A4 高度分页
@@ -25,12 +56,18 @@ export async function downloadAsPdf(node: HTMLElement, filename: string): Promis
     import('jspdf'),
   ]);
 
+  // 临时移除祖先元素的 transform，防止 html2canvas 渲染异常
+  const restoreTransforms = stripAncestorTransforms(node);
+
   const canvas = await html2canvas(node, {
     backgroundColor: '#ffffff',
     scale: window.devicePixelRatio >= 2 ? 2 : Math.max(2, window.devicePixelRatio),
     useCORS: true,
     logging: false,
   });
+
+  // 还原 transform
+  restoreTransforms();
 
   const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
   const pageWidth = A4_WIDTH_MM;
