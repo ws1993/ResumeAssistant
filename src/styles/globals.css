@@ -1,0 +1,170 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --font-sans:
+    'Inter var', 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', system-ui,
+    sans-serif;
+  --font-serif: 'Source Serif Pro', 'Noto Serif SC', 'Songti SC', Cambria, Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+:root {
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.18 0.01 264);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.01 264);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.01 264);
+  --primary: oklch(0.27 0.02 264);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.005 264);
+  --secondary-foreground: oklch(0.27 0.02 264);
+  --muted: oklch(0.96 0.005 264);
+  --muted-foreground: oklch(0.55 0.02 264);
+  --accent: oklch(0.94 0.01 264);
+  --accent-foreground: oklch(0.27 0.02 264);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --success: oklch(0.62 0.16 152);
+  --warning: oklch(0.74 0.15 70);
+  --border: oklch(0.92 0.005 264);
+  --input: oklch(0.92 0.005 264);
+  --ring: oklch(0.27 0.02 264);
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: oklch(0.16 0.01 264);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.2 0.01 264);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.2 0.01 264);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.98 0 0);
+  --primary-foreground: oklch(0.2 0.01 264);
+  --secondary: oklch(0.26 0.01 264);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.26 0.01 264);
+  --muted-foreground: oklch(0.66 0.02 264);
+  --accent: oklch(0.3 0.01 264);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --success: oklch(0.7 0.18 152);
+  --warning: oklch(0.78 0.16 70);
+  --border: oklch(0.3 0.01 264);
+  --input: oklch(0.3 0.01 264);
+  --ring: oklch(0.7 0.02 264);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1,
+      'ss01' 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--primary) 25%, transparent);
+    color: var(--foreground);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}
+
+/* ============================================================
+   简历预览容器：A4 纸张样式（210mm x 297mm）
+   ============================================================ */
+.resume-page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 18mm 16mm;
+  background: #ffffff;
+  color: #111827;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .print\:hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  .resume-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 18mm 16mm !important;
+    page-break-after: always;
+  }
+}

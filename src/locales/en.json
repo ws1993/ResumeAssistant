@@ -1,0 +1,112 @@
+{
+  "app": {
+    "name": "Resume Assistant",
+    "tagline": "Tailor your resume to the role"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "editor": "Editor",
+    "tailor": "Tailor",
+    "preview": "Preview",
+    "settings": "Settings"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "create": "Create",
+    "duplicate": "Duplicate",
+    "search": "Search",
+    "loading": "Loading…",
+    "empty": "Nothing here yet",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "success": "Done",
+    "fail": "Failed",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "label": "Language",
+    "zh": "中文",
+    "en": "English"
+  },
+  "dashboard": {
+    "title": "My Resumes",
+    "subtitle": "Create, manage and compare versions",
+    "createResume": "New resume",
+    "lastEdited": "Last edited: {{date}}",
+    "noResumes": "No resumes yet. Start from a blank template."
+  },
+  "editor": {
+    "sections": {
+      "basics": "Basics",
+      "summary": "Summary",
+      "experiences": "Experience",
+      "projects": "Projects",
+      "educations": "Education",
+      "skills": "Skills",
+      "certifications": "Certifications",
+      "publications": "Publications",
+      "custom": "Custom"
+    },
+    "autosaved": "Autosaved",
+    "addItem": "Add",
+    "removeItem": "Remove"
+  },
+  "tailor": {
+    "title": "JD tailoring",
+    "jdPlaceholder": "Paste the job description here…",
+    "analyze": "Analyze",
+    "scoreOverall": "Overall",
+    "scoreKeywords": "Keywords",
+    "scoreRelevance": "Relevance",
+    "scoreQuantified": "Quantified",
+    "scoreExpression": "Expression",
+    "scoreFormat": "Format",
+    "matched": "Matched",
+    "missing": "Missing",
+    "suggestions": "Suggestions",
+    "applySelected": "Apply selected",
+    "coverLetter": "Cover letter"
+  },
+  "settings": {
+    "title": "Settings",
+    "llm": {
+      "title": "LLM",
+      "warning": "Your API key is stored in this browser only and never sent to any server we own.",
+      "baseURL": "Base URL",
+      "apiKey": "API Key",
+      "model": "Model",
+      "temperature": "Temperature",
+      "timeout": "Timeout (s)",
+      "test": "Test connection",
+      "presets": "Presets"
+    },
+    "webdav": {
+      "title": "WebDAV Sync (optional)",
+      "endpoint": "Endpoint",
+      "username": "Username",
+      "password": "Password",
+      "remotePath": "Remote path",
+      "passphrase": "Passphrase",
+      "push": "Push to cloud",
+      "pull": "Pull from cloud"
+    },
+    "data": {
+      "title": "Data",
+      "export": "Export all",
+      "import": "Import",
+      "clear": "Clear local data"
+    }
+  }
+}

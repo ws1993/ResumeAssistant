@@ -1,0 +1,112 @@
+{
+  "app": {
+    "name": "简历助手",
+    "tagline": "对标招聘需求，重写你的故事"
+  },
+  "nav": {
+    "dashboard": "工作台",
+    "editor": "编辑器",
+    "tailor": "JD 对标",
+    "preview": "预览",
+    "settings": "设置"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "confirm": "确认",
+    "edit": "编辑",
+    "create": "新建",
+    "duplicate": "复制",
+    "search": "搜索",
+    "loading": "加载中…",
+    "empty": "暂无数据",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "success": "操作成功",
+    "fail": "操作失败",
+    "yes": "是",
+    "no": "否"
+  },
+  "theme": {
+    "label": "主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "language": {
+    "label": "语言",
+    "zh": "中文",
+    "en": "English"
+  },
+  "dashboard": {
+    "title": "我的简历",
+    "subtitle": "创建、管理与版本对比",
+    "createResume": "新建简历",
+    "lastEdited": "最近编辑：{{date}}",
+    "noResumes": "还没有简历，从空白模板开始吧"
+  },
+  "editor": {
+    "sections": {
+      "basics": "基本信息",
+      "summary": "个人简介",
+      "experiences": "工作经历",
+      "projects": "项目经历",
+      "educations": "教育背景",
+      "skills": "技能",
+      "certifications": "证书",
+      "publications": "出版物",
+      "custom": "自定义"
+    },
+    "autosaved": "已自动保存",
+    "addItem": "添加",
+    "removeItem": "删除"
+  },
+  "tailor": {
+    "title": "JD 对标分析",
+    "jdPlaceholder": "在此粘贴招聘需求（JD）……",
+    "analyze": "开始分析",
+    "scoreOverall": "综合得分",
+    "scoreKeywords": "关键词覆盖",
+    "scoreRelevance": "经历相关度",
+    "scoreQuantified": "量化数据",
+    "scoreExpression": "表达专业度",
+    "scoreFormat": "结构规范",
+    "matched": "已命中",
+    "missing": "缺失",
+    "suggestions": "改写建议",
+    "applySelected": "应用所选建议",
+    "coverLetter": "求职信"
+  },
+  "settings": {
+    "title": "设置",
+    "llm": {
+      "title": "大模型配置",
+      "warning": "API Key 仅保存在本浏览器，不会上传任何服务器。",
+      "baseURL": "Base URL",
+      "apiKey": "API Key",
+      "model": "模型名称",
+      "temperature": "Temperature",
+      "timeout": "超时（秒）",
+      "test": "测试连接",
+      "presets": "常用预设"
+    },
+    "webdav": {
+      "title": "WebDAV 同步（可选）",
+      "endpoint": "服务地址",
+      "username": "用户名",
+      "password": "密码",
+      "remotePath": "远端目录",
+      "passphrase": "加密口令",
+      "push": "推送到云端",
+      "pull": "从云端拉取"
+    },
+    "data": {
+      "title": "数据管理",
+      "export": "导出全部数据",
+      "import": "导入数据",
+      "clear": "清空本地数据"
+    }
+  }
+}
