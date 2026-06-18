@@ -79,6 +79,31 @@
     "applySelected": "Apply selected",
     "coverLetter": "Cover letter"
   },
+  "sync": {
+    "status": "Sync status",
+    "idle": "Ready",
+    "syncing": "Syncing…",
+    "error": "Sync error",
+    "pushNow": "Push now",
+    "pullNow": "Pull now",
+    "pullConfirm": "Pulling will overwrite or merge local data. Continue?",
+    "pullModeConfirm": "Overwrite local data?\n「OK」= Overwrite；「Cancel」= Merge",
+    "lastSynced": "Last synced",
+    "history": "Sync history",
+    "noHistory": "No sync history yet",
+    "snapshot": {
+      "title": "Snapshots",
+      "description": "Browse remote snapshots. Restore or delete them as needed.",
+      "count": "{{count}} snapshots",
+      "empty": "No snapshots yet. Push first.",
+      "restore": "Restore",
+      "delete": "Delete",
+      "overwrite": "Overwrite",
+      "merge": "Merge",
+      "prune": "Prune old",
+      "maxHint": "Currently keeping up to {{max}} snapshots. Older ones are auto-pruned."
+    }
+  },
   "settings": {
     "title": "Settings",
     "llm": {
@@ -93,14 +118,21 @@
       "presets": "Presets"
     },
     "webdav": {
-      "title": "WebDAV Sync (optional)",
+      "title": "WebDAV Sync",
+      "description": "Push encrypted data to your WebDAV server (Nutstore / NextCloud / self-hosted). All credentials stay in your browser.",
       "endpoint": "Endpoint",
       "username": "Username",
       "password": "Password",
       "remotePath": "Remote path",
       "passphrase": "Passphrase",
+      "passphrasePlaceholder": "Passphrase for encrypting snapshots",
+      "passphraseHint": "Used with PBKDF2 + AES-GCM to encrypt exports. Same passphrase required for pull.",
+      "testConnection": "Test connection",
       "push": "Push to cloud",
-      "pull": "Pull from cloud"
+      "pull": "Pull from cloud",
+      "autoSync": "Auto sync",
+      "autoSyncInterval": "Interval (min)",
+      "maxSnapshots": "Max snapshots"
     },
     "data": {
       "title": "Data",

@@ -5,6 +5,7 @@ import { FileText, LayoutDashboard, Settings as SettingsIcon, Sparkles } from 'l
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
+import { SyncStatusIndicator } from './SyncStatusIndicator';
 
 interface NavItem {
   to: string;
@@ -59,6 +60,7 @@ export function Header(): React.JSX.Element {
         </nav>
 
         <div className="ml-auto flex items-center gap-1">
+          <SyncStatusIndicator />
           <LanguageToggle />
           <ThemeToggle />
         </div>

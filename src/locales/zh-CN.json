@@ -79,6 +79,31 @@
     "applySelected": "应用所选建议",
     "coverLetter": "求职信"
   },
+  "sync": {
+    "status": "同步状态",
+    "idle": "已就绪",
+    "syncing": "同步中…",
+    "error": "同步异常",
+    "pushNow": "立即推送",
+    "pullNow": "立即拉取",
+    "pullConfirm": "拉取后会覆盖或合并本地数据，是否继续？",
+    "pullModeConfirm": "覆盖本地数据？\n「确定」= 覆盖；「取消」= 合并",
+    "lastSynced": "最近同步",
+    "history": "同步历史",
+    "noHistory": "暂无同步记录",
+    "snapshot": {
+      "title": "快照管理",
+      "description": "浏览远端快照，可选择恢复或删除。恢复时可选择覆盖或合并本地数据。",
+      "count": "{{count}} 个快照",
+      "empty": "暂无快照，先推送一次吧",
+      "restore": "恢复",
+      "delete": "删除",
+      "overwrite": "覆盖",
+      "merge": "合并",
+      "prune": "清理旧快照",
+      "maxHint": "当前最大保留 {{max}} 个快照，超出后旧快照将被自动清理。"
+    }
+  },
   "settings": {
     "title": "设置",
     "llm": {
@@ -93,14 +118,21 @@
       "presets": "常用预设"
     },
     "webdav": {
-      "title": "WebDAV 同步（可选）",
+      "title": "WebDAV 同步",
+      "description": "数据加密后推送到你的 WebDAV 服务器（坚果云 / NextCloud / 自建）。所有凭据仅保存在浏览器。",
       "endpoint": "服务地址",
       "username": "用户名",
       "password": "密码",
       "remotePath": "远端目录",
       "passphrase": "加密口令",
+      "passphrasePlaceholder": "用于加密数据库快照的口令",
+      "passphraseHint": "口令用于 PBKDF2 + AES-GCM 加密导出内容，拉取时需输入同一口令。",
+      "testConnection": "测试连接",
       "push": "推送到云端",
-      "pull": "从云端拉取"
+      "pull": "从云端拉取",
+      "autoSync": "自动同步",
+      "autoSyncInterval": "同步间隔（分钟）",
+      "maxSnapshots": "最大快照数"
     },
     "data": {
       "title": "数据管理",

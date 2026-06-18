@@ -27,6 +27,9 @@ export const webdavSettingsSchema = z.object({
   remotePath: z.string().default('/resume-assistant'),
   passphrase: z.string().optional(),
   lastSyncedAt: z.string().optional(),
+  autoSync: z.boolean().default(false),
+  autoSyncIntervalMin: z.number().int().min(5).max(1440).default(30),
+  maxSnapshots: z.number().int().min(1).max(100).default(20),
 });
 
 export type LlmPresetId = z.infer<typeof llmPresetIdSchema>;
@@ -106,5 +109,8 @@ export function defaultWebDAVSettings(): WebDAVSettings {
     username: '',
     password: '',
     remotePath: '/resume-assistant',
+    autoSync: false,
+    autoSyncIntervalMin: 30,
+    maxSnapshots: 20,
   };
 }
