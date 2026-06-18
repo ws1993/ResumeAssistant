@@ -5,24 +5,28 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap border-2 font-semibold uppercase tracking-wider transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
   {
     variants: {
       variant: {
-        default: 'bg-foreground text-background border-foreground hover:bg-[color:var(--destructive)] hover:border-[color:var(--destructive)]',
+        default:
+          'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:shadow-md hover:-translate-y-px',
         destructive:
-          'bg-[color:var(--destructive)] text-white border-[color:var(--destructive)] hover:opacity-90',
+          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-md',
         outline:
-          'bg-background text-foreground border-foreground hover:bg-foreground hover:text-background',
-        secondary: 'bg-secondary text-secondary-foreground border-secondary-foreground hover:bg-foreground hover:text-background',
-        ghost: 'border-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
-        link: 'border-transparent text-foreground underline-offset-4 hover:underline',
+          'border border-border bg-background text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground hover:border-foreground/20',
+        secondary:
+          'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+        ghost:
+          'hover:bg-accent hover:text-accent-foreground',
+        link:
+          'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-9 px-4 py-2 text-[0.8125rem]',
-        sm: 'h-7 px-3 text-[0.6875rem]',
-        lg: 'h-10 px-6 text-[0.8125rem]',
-        icon: 'size-9',
+        default: 'h-9 px-4 py-2 text-[0.8125rem] rounded-full',
+        sm: 'h-7 px-3 text-[0.75rem] rounded-full',
+        lg: 'h-10 px-6 text-[0.8125rem] rounded-full',
+        icon: 'size-9 rounded-full',
       },
     },
     defaultVariants: { variant: 'default', size: 'default' },

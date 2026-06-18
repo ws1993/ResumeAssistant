@@ -35,55 +35,55 @@
   --font-mono: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
 }
 
-/* ─── Swiss Design Light Mode ─── */
+/* ─── Stripe Warm Light Mode ─── */
 :root {
-  --background: oklch(1.00 0 0);
-  --foreground: oklch(0.15 0.01 15);
+  --background: oklch(0.975 0.003 240);
+  --foreground: oklch(0.18 0.02 260);
   --card: oklch(1.00 0 0);
-  --card-foreground: oklch(0.15 0.01 15);
+  --card-foreground: oklch(0.18 0.02 260);
   --popover: oklch(1.00 0 0);
-  --popover-foreground: oklch(0.15 0.01 15);
-  --primary: oklch(0.15 0.01 15);
+  --popover-foreground: oklch(0.18 0.02 260);
+  --primary: oklch(0.52 0.20 275);
   --primary-foreground: oklch(1.00 0 0);
-  --secondary: oklch(0.97 0.002 15);
-  --secondary-foreground: oklch(0.25 0.01 15);
-  --muted: oklch(0.97 0.002 15);
-  --muted-foreground: oklch(0.55 0.01 15);
-  --accent: oklch(0.97 0.005 15);
-  --accent-foreground: oklch(0.25 0.01 15);
-  --destructive: oklch(0.58 0.22 25);
+  --secondary: oklch(0.96 0.005 240);
+  --secondary-foreground: oklch(0.35 0.02 260);
+  --muted: oklch(0.955 0.005 240);
+  --muted-foreground: oklch(0.52 0.02 260);
+  --accent: oklch(0.955 0.01 275);
+  --accent-foreground: oklch(0.35 0.02 260);
+  --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(1.00 0 0);
-  --success: oklch(0.62 0.17 155);
-  --warning: oklch(0.75 0.15 70);
-  --border: oklch(0.15 0.01 15);
-  --input: oklch(0.90 0.003 15);
-  --ring: oklch(0.58 0.22 25);
-  --radius: 0px;
+  --success: oklch(0.70 0.17 165);
+  --warning: oklch(0.80 0.16 75);
+  --border: oklch(0.90 0.005 240);
+  --input: oklch(0.90 0.005 240);
+  --ring: oklch(0.52 0.20 275);
+  --radius: 0.625rem;
 }
 
 /* ─── Dark Mode ─── */
 .dark {
-  --background: oklch(0.15 0.01 15);
-  --foreground: oklch(0.98 0 0);
-  --card: oklch(0.19 0.01 15);
-  --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.19 0.01 15);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.98 0 0);
-  --primary-foreground: oklch(0.15 0.01 15);
-  --secondary: oklch(0.24 0.01 15);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.24 0.01 15);
-  --muted-foreground: oklch(0.65 0.01 15);
-  --accent: oklch(0.28 0.01 15);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.58 0.22 25);
+  --background: oklch(0.15 0.01 260);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.19 0.01 260);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.19 0.01 260);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.62 0.20 275);
+  --primary-foreground: oklch(1.00 0 0);
+  --secondary: oklch(0.24 0.01 260);
+  --secondary-foreground: oklch(0.90 0 0);
+  --muted: oklch(0.24 0.01 260);
+  --muted-foreground: oklch(0.62 0.02 260);
+  --accent: oklch(0.28 0.02 275);
+  --accent-foreground: oklch(0.97 0 0);
+  --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(1.00 0 0);
-  --success: oklch(0.70 0.18 155);
-  --warning: oklch(0.78 0.16 70);
-  --border: oklch(0.35 0.01 15);
-  --input: oklch(0.28 0.01 15);
-  --ring: oklch(0.58 0.22 25);
+  --success: oklch(0.72 0.18 165);
+  --warning: oklch(0.80 0.16 75);
+  --border: oklch(0.28 0.01 260);
+  --input: oklch(0.28 0.01 260);
+  --ring: oklch(0.62 0.20 275);
 }
 
 @layer base {
@@ -111,7 +111,7 @@
   }
 
   ::selection {
-    background-color: oklch(0.58 0.22 25 / 0.2);
+    background-color: oklch(0.52 0.20 275 / 0.15);
     color: var(--foreground);
   }
 }
@@ -127,16 +127,6 @@
 
   .scrollbar-thin {
     scrollbar-width: thin;
-  }
-}
-
-/* ─── Swiss Design: hard shadow on card hover ─── */
-@layer components {
-  .card-hover-effect {
-    transition: box-shadow 0.15s ease;
-  }
-  .card-hover-effect:hover {
-    box-shadow: 6px 6px 0 var(--border);
   }
 }
 

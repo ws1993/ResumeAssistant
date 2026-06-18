@@ -5,12 +5,12 @@ import { cn } from '@/lib/utils';
 export type BadgeVariant = 'default' | 'secondary' | 'outline' | 'success' | 'destructive' | 'warning';
 
 const variantClass: Record<BadgeVariant, string> = {
-  default: 'border-foreground bg-foreground text-background',
-  secondary: 'border-foreground bg-secondary text-secondary-foreground',
-  outline: 'border-foreground text-foreground',
-  success: 'border-[color:var(--success)] text-[color:var(--success)]',
-  destructive: 'border-[color:var(--destructive)] text-[color:var(--destructive)]',
-  warning: 'border-[color:var(--warning)] text-[color:var(--warning)]',
+  default: 'bg-primary/10 text-primary',
+  secondary: 'bg-secondary text-secondary-foreground',
+  outline: 'border border-border text-foreground',
+  success: 'bg-[color:var(--success)]/10 text-[color:var(--success)]',
+  destructive: 'bg-[color:var(--destructive)]/10 text-[color:var(--destructive)]',
+  warning: 'bg-[color:var(--warning)]/10 text-[color:var(--warning)]',
 };
 
 export function Badge({
@@ -21,7 +21,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center border-2 px-2 py-0.5 font-bold uppercase tracking-wider transition-colors text-[0.6875rem]',
+        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors',
         variantClass[variant],
         className,
       )}

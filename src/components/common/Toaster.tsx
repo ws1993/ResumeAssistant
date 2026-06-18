@@ -11,14 +11,14 @@ const ICONS: Record<ToastVariant, React.ComponentType<{ className?: string }>> =
 };
 
 const VARIANT_CLASS: Record<ToastVariant, string> = {
-  default: 'border-foreground bg-card text-card-foreground',
-  success: 'border-[color:var(--success)] bg-card text-card-foreground',
-  error: 'border-[color:var(--destructive)] bg-card text-card-foreground',
-  warning: 'border-[color:var(--warning)] bg-card text-card-foreground',
+  default: 'border-border bg-card text-card-foreground',
+  success: 'border-[color:var(--success)]/40 bg-card text-card-foreground',
+  error: 'border-[color:var(--destructive)]/40 bg-card text-card-foreground',
+  warning: 'border-[color:var(--warning)]/40 bg-card text-card-foreground',
 };
 
 const ICON_COLOR: Record<ToastVariant, string> = {
-  default: 'text-foreground',
+  default: 'text-muted-foreground',
   success: 'text-[color:var(--success)]',
   error: 'text-[color:var(--destructive)]',
   warning: 'text-[color:var(--warning)]',
@@ -37,13 +37,13 @@ export function Toaster(): React.JSX.Element {
             key={it.id}
             role="status"
             className={cn(
-              'pointer-events-auto flex items-start gap-3 border-2 p-3 shadow-[4px_4px_0_var(--border)] transition-all',
+              'pointer-events-auto flex items-start gap-3 rounded-xl border p-3 shadow-md transition-all',
               VARIANT_CLASS[it.variant],
             )}
           >
             <Icon className={cn('mt-0.5 size-4 shrink-0', ICON_COLOR[it.variant])} />
             <div className="flex-1 text-sm">
-              {it.title ? <div className="font-bold">{it.title}</div> : null}
+              {it.title ? <div className="font-semibold">{it.title}</div> : null}
               {it.description ? (
                 <div className="mt-0.5 text-xs text-muted-foreground break-words">{it.description}</div>
               ) : null}
@@ -51,7 +51,7 @@ export function Toaster(): React.JSX.Element {
             <button
               type="button"
               aria-label="关闭"
-              className="rounded p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+              className="rounded-md p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground"
               onClick={() => dismiss(it.id)}
             >
               <X className="size-3.5" />
