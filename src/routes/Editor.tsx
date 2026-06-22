@@ -40,7 +40,7 @@ export default function EditorPage(): React.JSX.Element {
   const setStore = useResumeStore((s) => s.set);
 
   const { savedAt, dirty } = useAutosave(800);
-  const { previewRef, toolbar } = useExportResume(current);
+  const { previewRef, toolbar, pageSetupNode } = useExportResume(current);
 
   useEffect(() => {
     let mounted = true;
@@ -92,7 +92,7 @@ export default function EditorPage(): React.JSX.Element {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_min-content]">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_auto]">
       <div className="space-y-4">
         <header className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
@@ -150,15 +150,30 @@ export default function EditorPage(): React.JSX.Element {
       </div>
 
       <aside className="hidden lg:block">
-        <div className="sticky top-[72px] space-y-2">
+        <div className="sticky top-[72px] w-[168mm] space-y-2">
           {toolbar}
           <TemplateSelect />
-          <div className="max-h-[calc(100vh-132px)] overflow-auto rounded-lg bg-muted/30 p-4">
-            <div className="origin-top-right scale-[0.62]">
-              <ResumePreview
-                ref={previewRef}
-                document={current}
-              />
+          {pageSetupNode}
+          <div className="rounded-lg bg-muted/30 p-2">
+            <div
+              className="overflow-y-auto overflow-x-hidden"
+              style={{
+                maxHeight: 'calc(100vh - 132px)',
+              }}
+            >
+              <div
+                style={{
+                  transform: 'scale(0.8)',
+                  transformOrigin: 'top left',
+                  width: '210mm',
+                }}
+              >
+                <ResumePreview
+                  key={current.meta.updatedAt}
+                  ref={previewRef}
+                  document={current}
+                />
+              </div>
             </div>
           </div>
         </div>

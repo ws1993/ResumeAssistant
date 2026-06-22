@@ -1,4 +1,6 @@
 import type { ResumeDocument } from '@/schema/resume';
+import type { PageSetup } from '@/components/resume/PageSetupDialog';
+import { DEFAULT_PAGE_SETUP } from '@/components/resume/PageSetupDialog';
 
 function sanitizeFilenameSegment(s: string): string {
   return s.replace(/[\\/:*?"<>|\n\r\t]+/g, '_').trim();
@@ -11,8 +13,10 @@ export function buildPdfFilename(doc: ResumeDocument): string {
   return [name, role, date].filter(Boolean).join('_') + '.pdf';
 }
 
-const A4_WIDTH_MM = 210;
-const A4_HEIGHT_MM = 297;
+const PAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  A4: { width: 210, height: 297 },
+  Letter: { width: 216, height: 279 },
+};
 
 /**
  * 临时移除祖先元素上的 CSS transform，以确保 html2canvas 正确截图。
@@ -124,11 +128,17 @@ function prepareCleanNodeForCapture(node: HTMLElement): HTMLElement {
  * - 依赖懒加载 html2canvas-pro 与 jsPDF
  * - 自动按 A4 高度分页
  */
-export async function downloadAsPdf(node: HTMLElement, filename: string): Promise<void> {
+export async function downloadAsPdf(
+  node: HTMLElement,
+  filename: string,
+  pageSetup: PageSetup = DEFAULT_PAGE_SETUP,
+): Promise<void> {
   const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
     import('html2canvas-pro'),
     import('jspdf'),
   ]);
+
+  const dims = PAGE_DIMENSIONS[pageSetup.pageSize] ?? PAGE_DIMENSIONS.A4;
 
   // 临时移除祖先元素的 transform，防止 html2canvas 渲染异常
   const restoreTransforms = stripAncestorTransforms(node);
@@ -153,9 +163,13 @@ export async function downloadAsPdf(node: HTMLElement, filename: string): Promis
     // 还原 transform
     restoreTransforms();
 
-    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-    const pageWidth = A4_WIDTH_MM;
-    const pageHeight = A4_HEIGHT_MM;
+    const pdf = new jsPDF({
+      unit: 'mm',
+      format: pageSetup.pageSize.toLowerCase() as 'a4' | 'letter',
+      orientation: 'portrait',
+    });
+    const pageWidth = dims.width;
+    const pageHeight = dims.height;
 
     const imgWidthMm = pageWidth;
     const imgHeightMm = (canvas.height * imgWidthMm) / canvas.width;

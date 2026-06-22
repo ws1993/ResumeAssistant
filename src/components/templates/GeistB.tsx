@@ -17,9 +17,7 @@ function Links({ links }: { links?: Link[] }): React.JSX.Element | null {
       {links.map((l, i) => (
         <span key={l.id}>
           {i > 0 ? ' · ' : ''}
-          <a href={l.url} target="_blank" rel="noreferrer" className="hover:underline">
-            {l.label || l.url}
-          </a>
+          {l.label ? `${l.label} (${l.url})` : l.url}
         </span>
       ))}
     </span>

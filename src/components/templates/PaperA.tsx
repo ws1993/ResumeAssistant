@@ -23,9 +23,7 @@ function joinLinks(links: Link[] | undefined): React.ReactNode {
       {links.map((l, i) => (
         <span key={l.id}>
           {i > 0 ? ' · ' : ''}
-          <a href={l.url} className="underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
-            {l.label || l.url}
-          </a>
+          {l.label ? `${l.label} (${l.url})` : l.url}
         </span>
       ))}
     </span>

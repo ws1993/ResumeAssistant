@@ -3,7 +3,7 @@ import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { newId, type Basics } from '@/schema/resume';
+import { newId } from '@/schema/resume';
 import { useResumeStore } from '@/stores/resumeStore';
 
 export function BasicsForm(): React.JSX.Element {
@@ -12,16 +12,12 @@ export function BasicsForm(): React.JSX.Element {
   if (!current) return <></>;
   const b = current.basics;
 
-  const update = (mut: (b: Basics) => void): void => {
-    setStore((doc) => mut(doc.basics));
-  };
-
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label htmlFor="name">姓名</Label>
-          <Input id="name" value={b.name} onChange={(e) => update((x) => (x.name = e.target.value))} />
+          <Input id="name" value={b.name} onChange={(e) => setStore((doc) => (doc.basics.name = e.target.value))} />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="headline">头衔</Label>
@@ -29,7 +25,7 @@ export function BasicsForm(): React.JSX.Element {
             id="headline"
             placeholder="如：高级前端工程师"
             value={b.headline ?? ''}
-            onChange={(e) => update((x) => (x.headline = e.target.value))}
+            onChange={(e) => setStore((doc) => (doc.basics.headline = e.target.value))}
           />
         </div>
       </div>
@@ -40,7 +36,7 @@ export function BasicsForm(): React.JSX.Element {
             id="email"
             type="email"
             value={b.email ?? ''}
-            onChange={(e) => update((x) => (x.email = e.target.value))}
+            onChange={(e) => setStore((doc) => (doc.basics.email = e.target.value))}
           />
         </div>
         <div className="space-y-1.5">
@@ -48,7 +44,7 @@ export function BasicsForm(): React.JSX.Element {
           <Input
             id="phone"
             value={b.phone ?? ''}
-            onChange={(e) => update((x) => (x.phone = e.target.value))}
+            onChange={(e) => setStore((doc) => (doc.basics.phone = e.target.value))}
           />
         </div>
         <div className="space-y-1.5">
@@ -56,7 +52,7 @@ export function BasicsForm(): React.JSX.Element {
           <Input
             id="location"
             value={b.location ?? ''}
-            onChange={(e) => update((x) => (x.location = e.target.value))}
+            onChange={(e) => setStore((doc) => (doc.basics.location = e.target.value))}
           />
         </div>
       </div>
@@ -68,7 +64,7 @@ export function BasicsForm(): React.JSX.Element {
           rows={4}
           placeholder="一句话定位 + 2-3 句亮点，用 JD 里的强动词"
           value={b.summary ?? ''}
-          onChange={(e) => update((x) => (x.summary = e.target.value))}
+          onChange={(e) => setStore((doc) => (doc.basics.summary = e.target.value))}
         />
       </div>
 
@@ -79,7 +75,9 @@ export function BasicsForm(): React.JSX.Element {
             variant="ghost"
             size="sm"
             onClick={() =>
-              update((x) => x.links.push({ id: newId(), label: '', url: '', category: 'personal' }))
+              setStore((doc) =>
+                doc.basics.links.push({ id: newId(), label: '', url: '', category: 'personal' }),
+              )
             }
           >
             添加链接
@@ -91,18 +89,18 @@ export function BasicsForm(): React.JSX.Element {
               placeholder="标签"
               className="w-28"
               value={link.label}
-              onChange={(e) => update((x) => (x.links[i].label = e.target.value))}
+              onChange={(e) => setStore((doc) => (doc.basics.links[i].label = e.target.value))}
             />
             <Input
               placeholder="https://"
               value={link.url}
-              onChange={(e) => update((x) => (x.links[i].url = e.target.value))}
+              onChange={(e) => setStore((doc) => (doc.basics.links[i].url = e.target.value))}
             />
             <Button
               variant="ghost"
               size="icon"
               aria-label="删除链接"
-              onClick={() => update((x) => x.links.splice(i, 1))}
+              onClick={() => setStore((doc) => doc.basics.links.splice(i, 1))}
             >
               <Trash2 className="size-4" />
             </Button>
