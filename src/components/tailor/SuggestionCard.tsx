@@ -1,6 +1,7 @@
 import type { Suggestion } from '@/schema/jdAnalysis';
 
 import { Badge, type BadgeVariant } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
 const PRIORITY_STYLE: Record<Suggestion['priority'], { label: string; variant: BadgeVariant }> = {
@@ -47,7 +48,7 @@ export function SuggestionCard({
             {suggestion.target}
           </code>
         </div>
-        <span className="shrink-0 text-[10px] text-muted-foreground">{selected ? '已选' : '点击选中'}</span>
+        <Checkbox checked={selected} className="shrink-0" />
       </header>
       <p className="text-sm font-medium text-foreground/90">{suggestion.rationale}</p>
       <div className="rounded-md bg-muted/60 p-2 text-xs leading-snug text-foreground/85">
