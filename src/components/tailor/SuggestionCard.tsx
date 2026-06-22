@@ -38,16 +38,16 @@ export function SuggestionCard({
       )}
     >
       <header className="flex items-center justify-between gap-2 text-xs">
-        <div className="flex items-center gap-1.5">
-          <Badge variant={p.variant}>{p.label}</Badge>
+        <div className="flex min-w-0 flex-1 items-center gap-1.5">
+          <Badge variant={p.variant} className="shrink-0">{p.label}</Badge>
           {suggestion.category ? (
-            <Badge variant="outline">{CATEGORY_LABEL[suggestion.category]}</Badge>
+            <Badge variant="outline" className="shrink-0">{CATEGORY_LABEL[suggestion.category]}</Badge>
           ) : null}
-          <code className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+          <code className="min-w-0 truncate rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
             {suggestion.target}
           </code>
         </div>
-        <span className="text-[10px] text-muted-foreground">{selected ? '已选' : '点击选中'}</span>
+        <span className="shrink-0 text-[10px] text-muted-foreground">{selected ? '已选' : '点击选中'}</span>
       </header>
       <p className="text-sm font-medium text-foreground/90">{suggestion.rationale}</p>
       <div className="rounded-md bg-muted/60 p-2 text-xs leading-snug text-foreground/85">
