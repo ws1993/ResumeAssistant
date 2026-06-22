@@ -154,26 +154,19 @@ export default function EditorPage(): React.JSX.Element {
           {toolbar}
           <TemplateSelect />
           {pageSetupNode}
-          <div className="rounded-lg bg-muted/30 p-2">
+          <div className="rounded-lg bg-muted/30 p-2 overflow-hidden">
             <div
-              className="overflow-y-auto overflow-x-hidden"
               style={{
-                maxHeight: 'calc(100vh - 132px)',
+                transform: 'scale(0.8)',
+                transformOrigin: 'top left',
+                width: '210mm',
               }}
             >
-              <div
-                style={{
-                  transform: 'scale(0.8)',
-                  transformOrigin: 'top left',
-                  width: '210mm',
-                }}
-              >
-                <ResumePreview
-                  key={current.meta.updatedAt}
-                  ref={previewRef}
-                  document={current}
-                />
-              </div>
+              <ResumePreview
+                key={current.meta.updatedAt}
+                ref={previewRef}
+                document={current}
+              />
             </div>
           </div>
         </div>
