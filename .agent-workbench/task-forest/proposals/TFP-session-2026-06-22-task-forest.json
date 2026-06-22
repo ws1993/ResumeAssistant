@@ -1,0 +1,382 @@
+{
+  "base_graph_hash": "e1ebf79ca8d6a3a4ee2118dd0c85c3375669171bda6219d1fd91994b882a577a",
+  "base_summary": {
+    "edge_count": 0,
+    "node_count": 0,
+    "workspace_path": "E:\\Project\\AI\\ResumeAssistant"
+  },
+  "changes": [
+    {
+      "action": "add_node",
+      "alias": "tf-maintenance-goal",
+      "node": {
+        "acceptance_criteria": [
+          "仓库中存在已初始化的 task-forest 目录",
+          "已保存一份待确认 proposal，说明本轮会话应如何写入图谱",
+          "在用户确认后可完成 validate 与 export"
+        ],
+        "alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.9,
+          "user_goal": "把本轮对话中有长期价值的目标、任务、进度、偏差、风险、决策和 follow-up 写成 task-forest proposal，并在确认后能够 apply/validate/export。",
+          "validation_plan": [
+            "确认 proposal 内容与本轮对话一致",
+            "用户确认后应用 proposal 并运行 validate",
+            "导出 HTML 并检查导出路径可用"
+          ],
+          "why_not_enough": "它只覆盖 task-forest 元任务，尚未说明 ResumeAssistant 产品本身的长期目标与业务方向。",
+          "why_this_task": "当前图谱为空，本轮最确定的长期价值是建立 task-forest 维护基线，让后续所有会话都能有稳定挂点。"
+        },
+        "assumptions": [
+          "用户此轮首先想维护 task-forest 元信息，而不是直接定义产品 roadmap",
+          "项目主目标当前尚未在 task-forest 中明确登记"
+        ],
+        "confidence": 0.82,
+        "context_tags": [
+          "task-forest",
+          "session-maintenance",
+          "repo-governance"
+        ],
+        "desired_outcomes": [
+          "当前仓库拥有可持续维护的 task-forest 基线",
+          "后续会话可以将长期价值信息写入同一任务图",
+          "任务图可在确认后导出为 HTML 供离线查看"
+        ],
+        "difficulty": "low",
+        "estimated_total_minutes": 60,
+        "evidence": [
+          "用户明确要求“分析当前对话，并维护当前 workspace 的任务森林”",
+          "用户要求“只保存 proposal，展示准备改什么；等我确认后再 apply”"
+        ],
+        "execution_hints": [
+          "后续会话先读取 list/todo，再决定挂接位置",
+          "产品主目标未明确前，优先记录 question/risk，不强挂产品任务"
+        ],
+        "kind": "global_task",
+        "non_goals": [
+          "不推断或替代产品本身的长期目标",
+          "不在未确认前直接应用正式图谱变更"
+        ],
+        "priority": 2,
+        "progress": 15,
+        "progress_source": "manual",
+        "purpose": "让该仓库后续会话可以基于统一任务图持续协作，而不是每轮重新推断上下文。",
+        "remaining_minutes_max": 45,
+        "remaining_minutes_min": 30,
+        "requirements": [
+          "只通过 task_forest.py 维护 task-forest",
+          "会话总结先保存 proposal，确认后再 apply",
+          "当目标归属不清时不强行挂接到产品目标"
+        ],
+        "source_sessions": [
+          "session-2026-06-22-task-forest-maintenance"
+        ],
+        "status": "in_progress",
+        "success_metrics": [
+          "后续会话可复用该 global task 挂接 task-forest 维护工作",
+          "proposal 能清楚展示新增节点、风险、问题与 follow-up",
+          "用户确认后能成功 apply、validate、export"
+        ],
+        "summary": "为当前 workspace 建立并持续维护 repo-local task-forest，使长期目标、进度、偏差、风险、决策与 follow-up 能被结构化追踪。",
+        "title": "维护 ResumeAssistant 仓库的任务森林连续性"
+      }
+    },
+    {
+      "action": "add_node",
+      "alias": "session-proposal-task",
+      "node": {
+        "acceptance_criteria": [
+          "proposal-save 预校验通过",
+          "提案中包含目标归属、question/risk、follow-up 与对齐说明"
+        ],
+        "alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.96,
+          "user_goal": "先保存 proposal，展示准备改什么；等我确认后再 apply。",
+          "validation_plan": [
+            "运行 proposal-save",
+            "向用户展示拟变更摘要"
+          ],
+          "why_not_enough": "还需要用户确认后才能完成 apply、validate、export。",
+          "why_this_task": "它直接对应用户要求的本轮交付物。"
+        },
+        "assumptions": [
+          "当前没有更早的同名未应用 proposal 与其冲突"
+        ],
+        "confidence": 0.9,
+        "context_tags": [
+          "task-forest",
+          "proposal",
+          "session-close"
+        ],
+        "desired_outcomes": [
+          "proposal 已保存到仓库",
+          "用户可以直观看到准备新增或更新哪些节点与关系",
+          "确认后可直接 apply"
+        ],
+        "difficulty": "low",
+        "estimated_total_minutes": 20,
+        "evidence": [
+          "本轮已读取现有 list/todo 并形成 proposal 草案"
+        ],
+        "kind": "task",
+        "non_goals": [
+          "不在未确认时执行 proposal-apply"
+        ],
+        "priority": 3,
+        "progress": 80,
+        "progress_source": "manual",
+        "purpose": "将本轮会话的长期价值沉淀为可审阅的结构化变更提案。",
+        "remaining_minutes_max": 10,
+        "remaining_minutes_min": 5,
+        "requirements": [
+          "proposal 必须只包含候选变更",
+          "展示长期价值信息而非原始聊天记录"
+        ],
+        "source_sessions": [
+          "session-2026-06-22-task-forest-maintenance"
+        ],
+        "status": "review_needed",
+        "success_metrics": [
+          "用户可据此直接确认或提出修订",
+          "apply 前无需再次整理会话信息"
+        ],
+        "summary": "把本轮对话中有长期价值的信息整理成 proposal，等待用户确认后再正式应用。",
+        "title": "整理并保存本轮会话的 task-forest 提案"
+      }
+    },
+    {
+      "action": "add_node",
+      "alias": "project-goal-question",
+      "node": {
+        "alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.94,
+          "user_goal": "判断本轮工作服务哪个长期目标；找不到关系时不要硬挂，先问我或生成 question/risk。",
+          "validation_plan": [
+            "等待用户确认产品主目标",
+            "在未来 proposal 中据此补挂历史任务"
+          ],
+          "why_not_enough": "需要用户后续回答后才能继续完善产品层任务图。",
+          "why_this_task": "当前没有任何已存在 global task，这个 question 能忠实保留不确定性。"
+        },
+        "assumptions": [
+          "现有仓库名称不足以唯一推断真实产品目标"
+        ],
+        "confidence": 0.88,
+        "context_tags": [
+          "question",
+          "goal-alignment",
+          "product-context"
+        ],
+        "desired_outcomes": [
+          "明确一个或多个产品长期目标",
+          "为后续会话建立正确的主父节点"
+        ],
+        "difficulty": "unknown",
+        "evidence": [
+          "现有 task-forest list/todo 均为空",
+          "用户要求找不到关系时不要硬挂"
+        ],
+        "kind": "question",
+        "non_goals": [
+          "不要求本轮立即制定完整 roadmap"
+        ],
+        "priority": 3,
+        "purpose": "避免把后续产品任务错误地挂到仅用于 task-forest 维护的元任务下面。",
+        "source_sessions": [
+          "session-2026-06-22-task-forest-maintenance"
+        ],
+        "status": "ready",
+        "success_metrics": [
+          "用户能明确说明当前仓库主要在做什么",
+          "后续产品级任务不再依赖猜测挂接"
+        ],
+        "summary": "当前图谱为空，尚无法确认本仓库的产品/业务长期目标，因此需要用户确认后续产品任务应挂接到哪个 global task。",
+        "title": "确认 ResumeAssistant 项目的长期主目标及本会话归属"
+      }
+    },
+    {
+      "action": "add_node",
+      "alias": "apply-validate-followup",
+      "node": {
+        "alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.97,
+          "user_goal": "apply 后运行 validate 和 export，并给出 HTML 路径。",
+          "validation_plan": [
+            "等待用户确认",
+            "执行 proposal-apply --yes",
+            "执行 validate 与 export"
+          ],
+          "why_not_enough": "目前还缺用户确认，因此只能作为 follow-up 保留。",
+          "why_this_task": "这是本轮需求中明确的下一步，但触发条件是用户确认。"
+        },
+        "assumptions": [
+          "当前 proposal 经用户确认后不需要大改"
+        ],
+        "confidence": 0.95,
+        "context_tags": [
+          "follow-up",
+          "validate",
+          "export"
+        ],
+        "desired_outcomes": [
+          "proposal 被正式应用",
+          "validate 通过",
+          "导出 HTML 路径可交付"
+        ],
+        "difficulty": "low",
+        "estimated_total_minutes": 10,
+        "evidence": [
+          "用户明确要求确认后 apply，并在 apply 后 validate/export"
+        ],
+        "kind": "follow_up",
+        "non_goals": [
+          "不在未确认时提前执行 apply"
+        ],
+        "priority": 3,
+        "purpose": "完成本轮用户要求中尚未执行的正式落库与导出步骤。",
+        "remaining_minutes_max": 15,
+        "remaining_minutes_min": 10,
+        "source_sessions": [
+          "session-2026-06-22-task-forest-maintenance"
+        ],
+        "status": "ready",
+        "success_metrics": [
+          "proposal-apply 成功",
+          "task-forest.html 文件生成成功"
+        ],
+        "summary": "待用户确认 proposal 后，执行 proposal-apply、validate、export，并返回 HTML 路径。",
+        "title": "在用户确认后应用提案并导出 HTML"
+      }
+    },
+    {
+      "action": "add_node",
+      "alias": "registry-risk",
+      "node": {
+        "alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.85,
+          "user_goal": "把本轮对话中有长期价值的风险写成 proposal。",
+          "validation_plan": [
+            "在正式 apply 后再次观察 validate/export 输出",
+            "若持续失败，再决定是否单独建立修复任务"
+          ],
+          "why_not_enough": "尚未验证后续 validate/export 是否也会触发相同警告。",
+          "why_this_task": "它是本轮实际操作中出现的可复用环境信息。"
+        },
+        "assumptions": [
+          "该错误影响的是轻量全局索引，不影响 workspace 内 canonical 数据"
+        ],
+        "confidence": 0.78,
+        "context_tags": [
+          "risk",
+          "environment",
+          "registry"
+        ],
+        "desired_outcomes": [
+          "后续会话知道 repo-local task-forest 可用，但全局 registry 可能不可用",
+          "必要时补查环境配置或权限问题"
+        ],
+        "difficulty": "medium",
+        "evidence": [
+          "init 输出：task-forest 全局 registry 更新失败：unable to open database file"
+        ],
+        "kind": "risk",
+        "non_goals": [
+          "不阻塞本轮 proposal 保存"
+        ],
+        "priority": 2,
+        "purpose": "保留环境层风险，避免后续误判全局 registry 状态正常。",
+        "source_sessions": [
+          "session-2026-06-22-task-forest-maintenance"
+        ],
+        "status": "ready",
+        "success_metrics": [
+          "后续 validate/export 若受 registry 影响，可快速定位",
+          "不会把 registry 异常误当成 task-forest 主数据损坏"
+        ],
+        "summary": "本轮执行 init 时，repo-local 初始化成功，但全局 registry 更新失败，提示 unable to open database file。",
+        "title": "task-forest 全局 registry 当前不可写"
+      }
+    },
+    {
+      "action": "add_edge",
+      "edge": {
+        "confidence": 0.95,
+        "reason": "整理并保存本轮提案是维护该仓库 task-forest 连续性的直接执行任务"
+      },
+      "from": "session-proposal-task",
+      "to": "tf-maintenance-goal",
+      "type": "child_of"
+    },
+    {
+      "action": "add_edge",
+      "edge": {
+        "confidence": 0.9,
+        "reason": "确认项目长期主目标有助于后续正确挂接产品任务"
+      },
+      "from": "project-goal-question",
+      "to": "tf-maintenance-goal",
+      "type": "clarifies"
+    },
+    {
+      "action": "add_edge",
+      "edge": {
+        "confidence": 0.98,
+        "reason": "只有本轮提案经用户确认后，才能正式 apply/validate/export"
+      },
+      "from": "apply-validate-followup",
+      "to": "session-proposal-task",
+      "type": "depends_on"
+    },
+    {
+      "action": "add_edge",
+      "edge": {
+        "confidence": 0.82,
+        "reason": "这是维护 task-forest 过程中暴露出的环境风险"
+      },
+      "from": "registry-risk",
+      "to": "tf-maintenance-goal",
+      "type": "related_to"
+    },
+    {
+      "action": "record_alignment",
+      "alignment": {
+        "candidate_summary": "候选方案 A 是直接创建产品级 global task，但证据不足；候选方案 B 是先建立 task-forest 维护基线，并把产品主目标未知保留为 question；候选方案 C 是只记一个 question 不建任何目标，会让后续 task-forest 维护没有稳定挂点。",
+        "confidence": 0.9,
+        "created_at": "2026-06-22T08:35:32.026099Z",
+        "id": "TFA-cc1c23deac",
+        "node_alignment": {
+          "fit": "aligned",
+          "fit_confidence": 0.9,
+          "user_goal": "用最小假设把本轮对话沉淀成可确认的 task-forest proposal。",
+          "validation_plan": [
+            "用户审阅 proposal 中的节点归属与 question 设置",
+            "确认后 apply 并导出 HTML"
+          ],
+          "why_not_enough": "仍需要用户补充 ResumeAssistant 项目的真实长期目标。",
+          "why_this_task": "以 task-forest 维护元任务作为主目标，能承接当前会话而不误导产品任务结构。"
+        },
+        "reason": "B 同时满足“不硬挂产品目标”和“为后续会话建立稳定维护主线”两个要求，风险最低且可执行性最高。",
+        "rejected_options": [
+          "A",
+          "C"
+        ],
+        "related_task_ids": [
+          "TF-0001",
+          "TF-0002",
+          "TF-0003"
+        ],
+        "selected_option": "B",
+        "user_goal": "分析当前对话并维护当前 workspace 的任务森林；在找不到长期目标关系时不要硬挂；本轮先保存 proposal，确认后再 apply。"
+      }
+    }
+  ],
+  "created_at": "2026-06-22T08:35:32.025099Z",
+  "proposal_id": "TFP-session-2026-06-22-task-forest",
+  "rationale": "本轮对话明确要求分析当前会话并维护当前 workspace 的 task-forest。现有图谱为空，因此先建立 repo 级任务森林维护基线，并保留项目主目标未知这一待确认问题，避免把元任务误挂到未经确认的产品目标上。",
+  "session_id": "session-2026-06-22-task-forest-maintenance",
+  "status": "proposed"
+}

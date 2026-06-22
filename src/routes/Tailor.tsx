@@ -13,6 +13,7 @@ import { CoverLetterDrawer } from '@/components/tailor/CoverLetterDrawer';
 import { KeywordCoverage } from '@/components/tailor/KeywordCoverage';
 import { PatchPreviewDialog } from '@/components/tailor/PatchPreviewDialog';
 import { ScoreCard } from '@/components/tailor/ScoreCard';
+import { SkillEvidenceCard } from '@/components/tailor/SkillEvidenceCard';
 import { SuggestionCard } from '@/components/tailor/SuggestionCard';
 import { previewPatch, applyPatchSafe, type PatchPreview } from '@/lib/jsonPatch';
 import { formatDateTime } from '@/lib/utils';
@@ -183,6 +184,14 @@ export default function TailorPage(): React.JSX.Element {
     }
   };
 
+  // 技能证明定位处理：跳转到编辑页并传递路径参数
+  const onLocateSkill = (path: string): void => {
+    if (!resumeId) return;
+    // 将路径编码后通过URL参数传递到编辑器
+    const encodedPath = encodeURIComponent(path);
+    navigate(`/editor/${resumeId}?highlight=${encodedPath}`);
+  };
+
   if (!resume) {
     return (
       <div className="flex h-[60vh] items-center justify-center text-muted-foreground">
@@ -315,12 +324,19 @@ export default function TailorPage(): React.JSX.Element {
           ) : null}
         </section>
 
-        {/* 中：评分 + 关键词 */}
+        {/* 中：评分 + 关键词 + 技能证明 */}
         <section className="space-y-4">
           {tailor.analysis ? (
             <>
               <ScoreCard analysis={tailor.analysis} />
               <KeywordCoverage analysis={tailor.analysis} />
+              {tailor.analysis.skillsEvidence && tailor.analysis.skillsEvidence.length > 0 && (
+                <SkillEvidenceCard
+                  evidence={tailor.analysis.skillsEvidence}
+                  onLocate={onLocateSkill}
+                  language={resume.meta.language}
+                />
+              )}
             </>
           ) : (
             <Card>

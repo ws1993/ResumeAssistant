@@ -3,6 +3,7 @@ import type { JdAnalysis, Scores } from '@/schema/jdAnalysis';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadarChart } from './RadarChart';
+import { DetailedScoresPanel } from './DetailedScoresPanel';
 
 const SCORE_KEYS: { key: keyof Scores; label: string }[] = [
   { key: 'overall', label: '总分' },
@@ -20,7 +21,19 @@ function scoreColor(value: number): string {
   return 'text-[color:var(--destructive)]';
 }
 
-export function ScoreCard({ analysis }: { analysis: JdAnalysis }): React.JSX.Element {
+interface ScoreCardProps {
+  analysis: JdAnalysis;
+  isQuickScore?: boolean; // 是否为快速评分（实时计算）
+  lastAnalyzedAt?: string; // 上次完整分析时间
+  onRefresh?: () => void; // 手动刷新回调
+}
+
+export function ScoreCard({
+  analysis,
+  isQuickScore = false,
+  lastAnalyzedAt,
+  onRefresh,
+}: ScoreCardProps): React.JSX.Element {
   const { scores, summary, redFlags } = analysis;
   return (
     <Card>
@@ -31,8 +44,26 @@ export function ScoreCard({ analysis }: { analysis: JdAnalysis }): React.JSX.Ele
             {Math.round(scores.overall)}
           </span>
           <span className="text-xs text-muted-foreground">/ 100</span>
+          {isQuickScore && (
+            <Badge variant="outline" className="ml-auto text-xs">
+              ⚡ 实时计算
+            </Badge>
+          )}
         </CardTitle>
         {summary ? <p className="text-sm text-muted-foreground">{summary}</p> : null}
+        {isQuickScore && lastAnalyzedAt && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>上次完整分析：{new Date(lastAnalyzedAt).toLocaleString('zh-CN')}</span>
+            {onRefresh && (
+              <button
+                onClick={onRefresh}
+                className="text-primary hover:underline"
+              >
+                🔄 重新完整分析
+              </button>
+            )}
+          </div>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
@@ -56,6 +87,9 @@ export function ScoreCard({ analysis }: { analysis: JdAnalysis }): React.JSX.Ele
             ))}
           </div>
         </div>
+
+        {/* 详细评分面板 */}
+        <DetailedScoresPanel scores={scores} />
 
         {redFlags.length ? (
           <div className="rounded-md border border-[color:var(--destructive)]/40 bg-[color:var(--destructive)]/5 p-2">

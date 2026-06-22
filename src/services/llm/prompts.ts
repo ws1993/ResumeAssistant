@@ -41,13 +41,26 @@ export function analyzeJdMessages(ctx: AnalyzeJdContext): Array<{ role: 'system'
 
   const system = `你是一位资深技术招聘官与 ATS 专家。请用 ${lang} 思考与输出。
 
-你的任务：给定一份 JD 与候选人简历的 JSON，按以下五维各给 0-100 分，再用加权平均得出总分（权重：关键词 0.30 / 相关度 0.30 / 量化 0.20 / 表达 0.10 / 结构 0.10）：
+你的任务：给定一份 JD 与候选人简历的 JSON，按以下维度各给 0-100 分：
 
+**核心维度（必须）**：
 1. keywords（关键词覆盖）：JD 的硬技能、工具链、责任词在简历中的命中率与位置质量
 2. relevance（经历相关度）：候选人的工作 / 项目经历与 JD 任职要求的实质相关程度
 3. quantified（量化数据）：要点是否包含可验证的数字（人数 / 时长 / 性能提升 / 业务指标）
 4. expression（表达专业度）：是否使用强动词、是否避免空话套话、术语是否一致
 5. format（结构规范）：区块顺序合理、关键信息易扫读、无冗余
+
+**扩展维度（可选，请尽量提供）**：
+6. skillsMatch（技能匹配）：技能列表与JD要求的精确匹配度
+7. experienceMatch（经验匹配）：工作年限和经历级别与岗位要求的匹配程度
+8. technicalDepth（技术深度）：技术能力描述的深度和专业性
+9. industryAlignment（行业契合）：行业背景与目标公司领域的契合度
+10. educationMatch（教育匹配）：学历背景是否符合岗位要求
+11. quantifiedImpact（量化成果）：业务影响力的量化表达程度
+12. toneSeniority（语气资历）：语言风格是否与目标职级（初级/中级/高级）匹配
+13. atsCompatibility（ATS兼容）：简历格式对ATS系统的友好度（避免表格、图片、特殊字符）
+
+总分计算方式：核心维度加权平均（权重：关键词 0.30 / 相关度 0.30 / 量化 0.20 / 表达 0.10 / 结构 0.10）
 
 你还需要返回：
 - matchedKeywords：JD 与简历共同涉及的关键词及其在简历中的频次
@@ -61,15 +74,51 @@ export function analyzeJdMessages(ctx: AnalyzeJdContext): Array<{ role: 'system'
     - category（keyword / quantify / rewrite / restructure）
 - redFlags：最多 3 条最严重问题，每条一句话
 - summary：30 字以内的整体诊断
+- skillsEvidence（技能证明链）：提取 JD 中要求的核心技能（最多 10 个），对每个技能分析：
+    - skill（技能名称）
+    - strength（证明强度 0-5 星）
+    - sources（证明来源数组，每个包含 type/path/excerpt/relevance）
+        - type: 'experience' | 'project' | 'education' | 'skills'
+        - path: JSON Pointer 指向简历中的段落（如 "/experiences/0"）
+        - excerpt: 相关文本片段（20字以内）
+        - relevance: 相关性 0-1
+    - status: 'strong'（3+星）| 'weak'（1-2星）| 'missing'（0星）
+    - recommendation: 如果是弱证明或缺失，给出改进建议
 
 严格按下述 JSON Schema 返回，不要任何解释性前后文，不要 Markdown 代码块：
 {
-  "scores": { "overall": 0, "keywords": 0, "relevance": 0, "quantified": 0, "expression": 0, "format": 0 },
+  "scores": {
+    "overall": 0,
+    "keywords": 0,
+    "relevance": 0,
+    "quantified": 0,
+    "expression": 0,
+    "format": 0,
+    "skillsMatch": 0,
+    "experienceMatch": 0,
+    "technicalDepth": 0,
+    "industryAlignment": 0,
+    "educationMatch": 0,
+    "quantifiedImpact": 0,
+    "toneSeniority": 0,
+    "atsCompatibility": 0
+  },
   "summary": "",
   "matchedKeywords": [{ "term": "", "frequency": 0, "source": "both", "category": "hard-skill" }],
   "missingKeywords": [],
   "suggestions": [{ "id": "s1", "priority": "p0", "target": "/experiences/0/bullets/2", "rationale": "", "draft": "", "category": "quantify" }],
-  "redFlags": []
+  "redFlags": [],
+  "skillsEvidence": [
+    {
+      "skill": "React",
+      "strength": 4,
+      "sources": [
+        { "type": "experience", "path": "/experiences/0", "excerpt": "开发React组件库", "relevance": 0.9 }
+      ],
+      "status": "strong",
+      "recommendation": ""
+    }
+  ]
 }`;
 
   const user = `${dictHint ? `${dictHint}\n\n` : ''}=== JD ===\n${ctx.jd}\n\n=== RESUME_JSON ===\n${JSON.stringify(ctx.resume)}`;
